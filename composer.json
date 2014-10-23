@@ -1,0 +1,24 @@
+{
+    "name": "compwright/shootproof-cli",
+    "description": "Command line client for ShootProof (http://shootproof.com)",
+    "keywords": ["shootproof", "cli", "client"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jonathon Hill",
+            "email": "jhill9693@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "aura/cli": "~2.0",
+        "monolog/monolog": "~1.11",
+        "phine/phar": "~1.0"
+    },
+    "require-dev": {
+        "shootproof/php-sdk": "dev-master"
+    },
+    "autoload": {
+        "psr-4": { "compwright\\ShootproofCli\\": ["src/"] }
+    }
+}
