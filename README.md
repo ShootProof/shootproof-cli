@@ -49,6 +49,14 @@ ShootProof API access token.
 
 Email address to log the script results to.
 
+### --email-from=`<email>`
+
+From email address to use when emailing the script results. Ignored if `--email` is not set.
+
+### --email-subject=`<subject>`
+
+Subject line to use when emailing the script results. Ignored if `--email` is not set.
+
 ### --retry-limit=`<limit>`
 
 Number of times to retry an operation if it fails. This option is ignored if `--halt-on-error` is passed.
