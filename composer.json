@@ -11,7 +11,9 @@
     ],
     "require": {
         "php": ">=5.4",
+        "josegonzalez/dotenv": "~0.2",
         "aura/cli": "~2.0",
+        "aura/di": "~2.0",
         "monolog/monolog": "~1.11",
         "phine/phar": "~1.0"
     },
