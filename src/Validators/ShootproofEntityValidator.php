@@ -13,5 +13,5 @@ abstract class ShootproofEntityValidator implements ValidatorInterface
 		$this->api = $api;
 	}
 
-	abstract public function __invoke($value, $setting, array $settings);
+	abstract public function __invoke($value, $setting = NULL, array $settings = []);
 }

@@ -2,8 +2,9 @@
 
 namespace compwright\ShootproofCli;
 
-use compwright\ShootproofCli\ValidatorException;
-use compwright\ShootproofCli\ValidatorInterface;
+use compwright\ShootproofCli\Validators\ValidatorException;
+use compwright\ShootproofCli\Validators\ValidatorInterface;
+use compwright\ShootproofCli\Validators\RequiredValidator;
 
 class Options
 {
@@ -12,7 +13,7 @@ class Options
 	protected $defaults = [];
 	protected $data = [];
 
-	public function __construct(array $config = [], array $defaults = [])
+	public function __construct(array $validators = [], array $defaults = [])
 	{
 		$this->addValidators($validators);
 		$this->setDefaults($defaults);
@@ -22,17 +23,14 @@ class Options
 	{
 		try
 		{
-			if ($this->__get($key) !== $value && $this->validate($key, $value))
+			if ($this->__get($key) !== $value && $this->validate($key, $value, TRUE))
 			{
 				$this->data[$key] = $value;
 			}
 		}
 		catch (ValidatorException $e)
 		{
-			if ($this->throwExceptions)
-			{
-				throw $e;				
-			}
+			throw $e;				
 		}
 	}
 
@@ -78,12 +76,12 @@ class Options
 		{
 			try
 			{
-				if ($overwrite || ! $this->_isset($key))
+				if ($overwrite || ! $this->__isset($key))
 				{
 					$this->__set($key, $value);
 				}
 			}
-			catch (ValidatorException)
+			catch (ValidatorException $e)
 			{
 				if ($throwExceptions)
 				{
@@ -109,7 +107,7 @@ class Options
 		       ? $default($this)
 		       : $default;
 
-		if ($this->validate($option, $value))
+		if ($this->validate($option, $value, TRUE))
 		{
 			$this->defaults[$option] = $default;
 		}
@@ -119,12 +117,9 @@ class Options
 
 	public function addValidators(array $validators)
 	{
-		foreach ($config as $option => $optionValidators)
+		foreach ($validators as $option => $validator)
 		{
-			foreach ($optionValidators as $validator)
-			{
-				$this->addValidator($option, $validator);
-			}
+			$this->addValidator($option, $validator);
 		}
 
 		return $this;
@@ -151,7 +146,7 @@ class Options
 		return $this;
 	}
 
-	public function validate($option, $value, array $options = [])
+	public function validate($option, $value, $skipRequired = FALSE)
 	{
 		if (empty($this->validators[$option]))
 		{
@@ -160,7 +155,12 @@ class Options
 
 		foreach ($this->validators[$option] as $validator)
 		{
-			if ( ! $validator($value))
+			if ($skipRequired && $validator instanceof RequiredValidator)
+			{
+				continue;
+			}
+
+			if ( ! $validator($value, $option, $this->data))
 			{
 				if ($this->throwExceptions)
 				{
@@ -182,7 +182,7 @@ class Options
 		{
 			foreach ($validators as $validator)
 			{
-				if ($validator instanceof RequiredValidator && ! $validator($this->__get($option)))
+				if ($validator instanceof RequiredValidator && ! $validator($this->__get($option), $option, $this->asArray()))
 				{
 					if ($this->throwExceptions)
 					{
@@ -201,6 +201,6 @@ class Options
 
 	public function asArray()
 	{
-		return $this->data;
+		return array_merge($this->defaults, $this->data);
 	}
 }

@@ -4,7 +4,7 @@ namespace compwright\ShootproofCli\Validators;
 
 class FileValidator implements ValidatorInterface
 {
-	public function __invoke($value, $setting, array $settings)
+	public function __invoke($value, $setting = NULL, array $settings = [])
 	{
 		return (
 			is_file($value) &&

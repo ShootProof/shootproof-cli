@@ -11,7 +11,7 @@ class RequiredValidator implements ValidatorInterface
 		$this->strict = $strict;
 	}
 
-	public function __invoke($value, $setting, array $settings)
+	public function __invoke($value, $setting = NULL, array $settings = [])
 	{
 		if ( ! isset($settings[$setting]))
 		{

@@ -21,6 +21,9 @@
         "shootproof/php-sdk": "dev-master"
     },
     "autoload": {
-        "psr-4": { "compwright\\ShootproofCli\\": ["src/"] }
+        "psr-4": {
+            "compwright\\ShootproofCli\\Test\\": ["tests/src/"],
+            "compwright\\ShootproofCli\\": ["src/"]
+        }
     }
 }

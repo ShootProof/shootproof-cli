@@ -12,6 +12,7 @@ class OptionsFactory
 {
 	protected $context;
 	protected $loader;
+	protected $error;
 
 	public function __construct(Context $context)
 	{
@@ -25,6 +26,8 @@ class OptionsFactory
 
 	public function newInstance(array $getopt = [], array $validators = [], array $defaults = [])
 	{
+		$this->error = NULL;
+		
 		// Extend the base config
 		$getopt = array_merge($this->config['getopt'], $getopt);
 		$validators = array_merge($this->config['validators'], $validators);
@@ -40,9 +43,21 @@ class OptionsFactory
 
 		// Read config file
 		$configLoader = new DotenvLoader(new TildeExpander($options->config));
-		$configData = $configLoader->parse()->toArray();
-		$options->loadOptionData($configData, FALSE); // don't overwrite CLI data
+		try
+		{
+			$configData = $configLoader->parse()->toArray();
+			$options->loadOptionData($configData, FALSE); // don't overwrite CLI data
+		}
+		catch (\InvalidArgumentException $e)
+		{
+			$this->error = $e;
+		}
 
 		return $options;
+	}
+
+	public function getLastError()
+	{
+		return $this->error;
 	}
 }

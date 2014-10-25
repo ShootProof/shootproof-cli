@@ -46,7 +46,10 @@ $options = [
 ];
 
 $validators = [
-	'verbosity' => new RangeValidator(0, 2),
+	'verbosity' => [
+		'is_numeric',
+		new RangeValidator(0, 2),
+	],
 	'config' => new FileValidator,
 	'app-id' => new RequiredValidator,
 	'access-token' => new RequiredValidator,

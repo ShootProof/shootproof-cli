@@ -13,7 +13,7 @@ class RangeValidator implements ValidatorInterface
 		$this->end = $end;
 	}
 
-	public function __invoke($value, $setting, array $settings)
+	public function __invoke($value, $setting = NULL, array $settings = [])
 	{
 		return (
 			$value >= $this->start &&

@@ -19,11 +19,12 @@ class OptionTransformer extends \ArrayObject
 
 	protected function transformKey($key)
 	{
-		// --long-option -> long_option
+		// --long-option -> longOption
 		$key = ltrim($key, '-');
-		$key = strtr($key, '-', '_');
+		return preg_replace_callback('/-(.?)/', array($this, 'capitalize'), $key);		
+	}
 
-		// long_option -> longOption
-		return preg_replace('/_(.?)/e', "strtoupper('$1')", $key);		
+	protected function capitalize($matches) {
+		return strtoupper($matches[1]);
 	}
 }

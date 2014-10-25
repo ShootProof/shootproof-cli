@@ -4,8 +4,10 @@ namespace compwright\ShootproofCli\Validators;
 
 class EmailValidator implements ValidatorInterface
 {
-	public function __invoke($value, $setting, array $settings)
+	public function __invoke($value, $setting = NULL, array $settings = [])
 	{
-		return TRUE;
+		return (
+			$value === filter_var($value, FILTER_VALIDATE_EMAIL)
+		);
 	}
 }
