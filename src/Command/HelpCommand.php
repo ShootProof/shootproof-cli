@@ -4,45 +4,46 @@ namespace compwright\ShootproofCli\Command;
 
 use Aura\Cli\Help;
 use Aura\Cli\Stdio;
-use Aura\Cli\Context;
-use Monolog\Logger;
 
-class HelpCommand
+class HelpCommand implements HelpableCommandInterface
 {
 	public static $usage = 'help [command]';
 
 	public static $description = <<<TEXT
 Displays this help screen, or help for a specific command.
 
-Supported commands:
+    Supported commands:
 
-  help
-  push
-  pull
-  accesslevel
+        help
+        push
+        pull
+        accesslevel
 TEXT;
 
-	public static $options = [];
+	protected $stdio;
 
-	protected $help;
-
-	public function __construct(Stdio $stdio, Logger $logger, Help $help)
+	static public function configureHelp(Help $help)
 	{
-		parent::__construct($stdio, $logger);
-		$this->help = $help;
+		$help->setUsage(self::$usage);
+		$help->setDescr(self::$description);
+		$help->setOptions([]);
+		return $help;
 	}
 
-	public function __invoke(BaseCommand $subCommand = NULL)
+	public function __construct(Stdio $stdio)
 	{
-		if ($subCommand)
+		$this->stdio = $stdio;
+	}
+
+	public function __invoke(Help $help, $subCommand = NULL)
+	{
+		if ($subCommand instanceof HelpableCommandInterface)
 		{
-			$this->help->setUsage($subCommand::$usage);
-			$this->help->setDescr($subCommand::$description);
-			$this->help->setOptions($subCommand::$options);
+			$subCommand->configureHelp($help);
 		}
 
 		$this->stdio->outln(
-			$this->help->getHelp('shootproof-cli.phar')
+			$help->getHelp('shootproof-cli.phar')
 		);
 	}
 }

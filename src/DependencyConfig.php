@@ -9,6 +9,9 @@ class DependencyConfig extends Config
 {
 	public function define(Container $di)
 	{
+		$di->set('Aura\Cli\Context', $di->lazyNew('Aura\Cli\Context'));
+		$di->set('Aura\Cli\Help', $di->lazyNew('Aura\Cli\Help'));
+
 		// Typehinted dependency resolution for command classes
 		$di->types['Context'] = $di->lazyNew('Aura\Cli\Context');
 		$di->types['Stdio'] = $di->lazyNew('Aura\Cli\Stdio');
@@ -21,5 +24,7 @@ class DependencyConfig extends Config
 		$di->set('pull', $di->lazyNew('compwright\ShootproofCli\Command\PullCommand'));
 		$di->set('accesslevel', $di->lazyNew('compwright\ShootproofCli\Command\AccesslevelCommand'));
 		$di->set('help', $di->lazyNew('compwright\ShootproofCli\Command\HelpCommand'));
+
+		$di->set('OptionsFactory', $di->lazyNew('compwright\ShootproofCli\OptionsFactory'));
 	}
 }

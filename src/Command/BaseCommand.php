@@ -2,7 +2,6 @@
 
 namespace compwright\ShootproofCli\Command;
 
-use compwright\ShootproofCli\Options;
 use compwright\ShootproofCli\OptionsFactory;
 use Aura\Cli\Stdio;
 use Aura\Cli\Context;
@@ -11,10 +10,6 @@ use Sp_Api as ShootproofApi;
 
 abstract class BaseCommand
 {
-	public static $usage = 'command [options] [<dir>]';
-	public static $description = '';
-	public static $options = [];
-
 	protected $stdio;
 	protected $logger;
 	protected $api;
@@ -25,8 +20,6 @@ abstract class BaseCommand
 		$this->logger = $logger;
 		$this->api = $api;
 	}
-
-	abstract static function configureOptions(Options $options, ShootproofApi $api);
 
 	abstract public function __invoke(Context $context, OptionsFactory $optionsFactory);
 }

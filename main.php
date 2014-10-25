@@ -7,21 +7,21 @@ require_once __DIR__ . '/vendor/autoload.php';
 $config = require __DIR__ . '/config.php';
 
 use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\Utility\TildeExpander;
 use compwright\ShootproofCli\Utility\OptionTransformer;
-use Aura\Di\ContainerBuilder;
+use compwright\ShootproofCli\Validators\ValidatorException;
+use Aura\Di\Container;
+use Aura\Di\Factory as ContainerFactory;
 use Aura\Cli\Status;
 use Monolog\Logger;
 use Monolog\Handler\NativeMailerHandler;
 use Monolog\Handler\BufferHandler;
 use Sp_Api;
 
-// Set up the dependency injection container
-$diFactory = new ContainerBuilder;
-$di = $diFactory->newInstance([], [
-	'Aura\Cli\_Config\Common',
-	'compwright\ShootproofCli\DependencyConfig',
-]);
+// Set up the dependency injection container; we do it manually here instead of
+// using the ContainerBuilder to prevent calling Container::lock()
+$di = new Container(new ContainerFactory);
+$di->newInstance('Aura\Cli\_Config\Common')->define($di);
+$di->newInstance('compwright\ShootproofCli\DependencyConfig')->define($di);
 
 // Catch errors
 set_exception_handler(function(\Exception $e) use ($di)
@@ -29,9 +29,10 @@ set_exception_handler(function(\Exception $e) use ($di)
 	try
 	{
 		// ID10T
-		if ($e instanceOf ValidationException)
+		if ($e instanceOf ValidatorException)
 		{
-			$di->get('help')();
+			echo $e;
+			$di->get('help')->__invoke();
 			exit(Status::USAGE);
 		}
 
@@ -52,7 +53,7 @@ $context = $di->get('Aura\Cli\Context');
 $getopt = $context->getopt(array_keys($config['options']));
 
 // Set up the options container
-$optionsFactory = $di->get('compwright\ShootproofCli\OptionsFactory');
+$optionsFactory = $di->get('OptionsFactory');
 $options = $optionsFactory->newInstance(array_keys($config['options']), $config['validators'], $config['defaults']);
 
 // Configure Monolog for email reporting
@@ -74,49 +75,55 @@ $help->setSummary($config['summary']);
 $help->setUsage($config['usage']);
 $help->setDescr($config['description']);
 $help->setOptions($config['options']);
-$di->set('Help', $help);
 
 // Dispatch command
-$command = $getopt->get(1);
-if ($command === 'help')
+$commandName = $getopt->get(1);
+if ($commandName === 'help')
 {
+	$helpCommand = $di->get($commandName);
+
 	// handle help subcommands
-	$subCommand = $getopt->get(2);
-	if ($subCommand)
+	$subCommandName = $getopt->get(2);
+	if ($subCommandName)
 	{
-		if ($di->has($subCommand))
+		if ($di->has($subCommandName))
 		{
 			// Show subcommand help
-			$commandClass($subCommandClass);
+			$subCommand = $di->get($subCommandName);
+			$helpCommand($help, $subCommand);
 			exit(Status::SUCCESS);
 		}
 		else
 		{
 			// Invalid subcommand; show help command help
-			$commandClass($commandClass);
+			$helpCommand($help, $helpCommand);
 			exit(Status::USAGE);
 		}
 	}
 	else
 	{
 		// No subcommand
-		$commandClass($commandClass);
+		$helpCommand($help, $helpCommand);
 		exit(Status::SUCCESS);
 	}
 }
-elseif ($di->has($command))
+elseif ($di->has($commandName))
 {
 	// Each command has its own set of options, but will need the general options too, so
 	// we inject the base config which will be extended with the command's own config
-	$optionsFactory->setBaseConfig(array_keys($config['options']), $config['validators'], $config['defaults']);
+	$optionsFactory->setBaseConfig(
+		array_keys($config['options']),
+		$config['validators'],
+		$config['defaults']
+	);
 
-	$commandClass = $di->get($command);
-	$commandClass($context, $optionsFactory);
+	$command = $di->get($commandName);
+	$command($context, $optionsFactory);
 	exit(Status::SUCCESS);
 }
 else
 {
 	// No command, show main help
-	$di->get('help')();
+	$di->get('help')->__invoke($help);
 	exit(Status::NOINPUT);
 }

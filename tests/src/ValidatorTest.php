@@ -8,6 +8,7 @@ use compwright\ShootproofCli\Validators\FileValidator;
 use compwright\ShootproofCli\Validators\RangeValidator;
 use compwright\ShootproofCli\Validators\RequiredValidator;
 use compwright\ShootproofCli\Validators\ValuesValidator;
+use compwright\ShootproofCli\Validators\CallbackValidator;
 use compwright\ShootproofCli\Validators\ValidatorInterface;
 
 class ValidatorTest extends PHPUnit_Framework_TestCase
@@ -34,6 +35,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
             [ new ValuesValidator(['A', 'B', 'C']), 'A', TRUE ],
             [ new ValuesValidator(['A', 'B', 'C']), 'D', FALSE ],
             [ new ValuesValidator(['A', 'B', 'C']), '', FALSE ],
+            [ new CallbackValidator('is_numeric', FALSE), '1', TRUE ],
+            [ new CallbackValidator('is_numeric', FALSE), 'H', FALSE ],
         ];
     }
 

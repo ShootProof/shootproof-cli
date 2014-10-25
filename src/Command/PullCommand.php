@@ -10,18 +10,28 @@ use compwright\ShootproofCli\Utility\FileSetCalculator;
 use Aura\Cli\Context;
 use Sp_Api as ShootproofApi;
 
-class PullCommand extends BaseCommand
+class PullCommand extends BaseCommand implements HelpableCommandInterface, ConfiguresOptionsInterface
 {
+	use HelpableCommandTrait;
+
 	public static $usage = 'pull [options] [<dir>]';
 
 	public static $description = <<<TEXT
-This command will compare the ShootProof photos in the specified event and compare those to the ones in the directory. New photos will be downloaded from ShootProof; any photos not on ShootProof will be deleted from the directory. If the --replace option is specified, then matching photos in the directory will be overwritten with the ones from ShootProof.
+This command will compare the ShootProof photos in the specified
+    event and compare those to the ones in the directory. New photos 
+    will be downloaded from ShootProof; any photos not on ShootProof 
+    will be deleted from the directory. If the --replace option is 
+    specified, then matching photos in the directory will be overwritten 
+    with the ones from ShootProof.
 
-If the --preview option is passed, then the operation will not actually execute, but a preview of the operation will be output.
+    If the --preview option is passed, then the operation will not 
+    actually execute, but a preview of the operation will be output.
 
-If no directory is specified, the current directory will be used.
+    If no directory is specified, the current directory will be used.
 
-If a .shootproof file exists in the directory, the event and album options will be read from that file unless they are explicitly provided on the command line.
+    If a .shootproof file exists in the directory, the event and album 
+    options will be read from that file unless they are explicitly 
+    provided on the command line.
 TEXT;
 
 	public static $options = [

@@ -10,6 +10,7 @@ use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 class OptionsFactory
 {
+	protected $config = [];
 	protected $context;
 	protected $loader;
 	protected $error;
@@ -29,9 +30,20 @@ class OptionsFactory
 		$this->error = NULL;
 		
 		// Extend the base config
-		$getopt = array_merge($this->config['getopt'], $getopt);
-		$validators = array_merge($this->config['validators'], $validators);
-		$defaults = array_merge($this->config['defaults'], $defaults);
+		if (isset($this->config['getopt']))
+		{
+			$getopt = array_merge($this->config['getopt'], $getopt);
+		}
+
+		if (isset($this->config['validators']))
+		{
+			$validators = array_merge($this->config['validators'], $validators);
+		}
+
+		if (isset($this->config['defaults']))
+		{
+			$defaults = array_merge($this->config['defaults'], $defaults);
+		}
 
 		// Read command line
 		$cli = $this->context->getopt($getopt);
@@ -39,7 +51,7 @@ class OptionsFactory
 
 		// Create the options container instance
 		$options = new Options($validators, $defaults);
-		$options->loadOptionData($data); // initial load so we can access the config option
+		$options->loadOptionData($data->getArrayCopy()); // initial load so we can access the config option
 
 		// Read config file
 		$configLoader = new DotenvLoader(new TildeExpander($options->config));
