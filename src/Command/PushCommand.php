@@ -80,7 +80,7 @@ TEXT;
 			'parent-album' => new ShootproofAlbumValidator($api),
 		]);
 
-		$options->setDefault('event', function(Options $options)
+		$options->setDefault('target', function(Options $options)
 		{
 			return $options->album
 			     ? 'album'

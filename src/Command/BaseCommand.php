@@ -22,4 +22,10 @@ abstract class BaseCommand
 	}
 
 	abstract public function __invoke(Context $context, OptionsFactory $optionsFactory);
+
+	protected function getFileList($dir)
+	{
+		// filter to only files, expand to absolute path
+		return array_map('realpath', array_filter(glob($dir . '/*'), 'is_file'));
+	}
 }
