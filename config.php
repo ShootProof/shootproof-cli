@@ -1,11 +1,12 @@
 <?php
 
-use Monolog\Logger;
 use compwright\ShootproofCli\Validators\RequiredValidator;
 use compwright\ShootproofCli\Validators\RangeValidator;
 use compwright\ShootproofCli\Validators\FileValidator;
 use compwright\ShootproofCli\Validators\EmailValidator;
 use compwright\ShootproofCli\Validators\CallbackValidator;
+use compwright\ShootproofCli\Validators\TimezoneValidator;
+use Monolog\Logger;
 
 $summary = 'Command line client for ShootProof';
 
@@ -37,6 +38,7 @@ Supported commands:
 TEXT;
 
 $options = [
+	'timezone:' => 'System timezone (http://us1.php.net/manual/en/timezones.php)',
 	'verbosity:' => 'Output verbosity level (0=silent, 1=normal, 2=debug)',
 	'config:' => 'Path to the .shootproof configuration file',
 	'app-id:' => 'ShootProof API application ID',
@@ -49,6 +51,7 @@ $options = [
 ];
 
 $validators = [
+	'timezone' => new TimezoneValidator,
 	'verbosity' => [
 		new CallbackValidator('is_numeric', FALSE),
 		new RangeValidator(0, 2),
@@ -61,6 +64,7 @@ $validators = [
 ];
 
 $defaults = [
+	'timezone' => 'America/New_York',
 	'verbosity' => 1,
 	'config' => '~/.shootproof',
 	'retry-limit' => 3,

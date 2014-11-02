@@ -64,6 +64,8 @@ $bufferedEmailLogger->pushHandler(
 	)
 );
 $di->set('Logger', $bufferedEmailLogger);
+// Set the timezone
+date_default_timezone_set($options->timezone);
 
 // Configure the ShootProof API client
 $api = new Sp_Api($options->accessToken);
