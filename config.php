@@ -57,18 +57,18 @@ $validators = [
 		new RangeValidator(0, 2),
 	],
 	//'config' => new FileValidator,
-	'app-id' => new RequiredValidator,
-	'access-token' => new RequiredValidator,
+	'appId' => new RequiredValidator,
+	'accessToken' => new RequiredValidator,
 	'email' => new EmailValidator,
-	'from-email' => new EmailValidator,
+	'fromEmail' => new EmailValidator,
 ];
 
 $defaults = [
 	'timezone' => 'America/New_York',
 	'verbosity' => 1,
 	'config' => '~/.shootproof',
-	'retry-limit' => 3,
-	'from-subject' => 'shootproof-cli script execution report',
+	'retryLimit' => 3,
+	'fromSubject' => 'shootproof-cli script execution report',
 ];
 
 return compact(
