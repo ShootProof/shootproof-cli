@@ -13,18 +13,15 @@ class DependencyConfig extends Config
 		$di->set('Aura\Cli\Help', $di->lazyNew('Aura\Cli\Help'));
 
 		// Typehinted dependency resolution for command classes
-		$di->types['Context'] = $di->lazyNew('Aura\Cli\Context');
-		$di->types['Stdio'] = $di->lazyNew('Aura\Cli\Stdio');
-		$di->types['Logger'] = $di->lazyGet('Logger');
+		$di->params['compwright\ShootproofCli\Command\BaseCommand']['stdio'] = $di->lazyNew('Aura\Cli\Stdio');
+		$di->params['compwright\ShootproofCli\Command\BaseCommand']['api'] = $di->get('ShootproofApi');
+		$di->params['compwright\ShootproofCli\Command\BaseCommand']['logger'] = $di->get('Logger');
 		$di->types['Help'] = $di->lazyGet('Help');
-		$di->types['Sp_Api'] = $di->lazyGet('ShootproofApi');
 
 		// Map CLI keywords to command classes
 		$di->set('push', $di->lazyNew('compwright\ShootproofCli\Command\PushCommand'));
 		$di->set('pull', $di->lazyNew('compwright\ShootproofCli\Command\PullCommand'));
 		$di->set('accesslevel', $di->lazyNew('compwright\ShootproofCli\Command\AccesslevelCommand'));
 		$di->set('help', $di->lazyNew('compwright\ShootproofCli\Command\HelpCommand'));
-
-		$di->set('OptionsFactory', $di->lazyNew('compwright\ShootproofCli\OptionsFactory'));
 	}
 }

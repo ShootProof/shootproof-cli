@@ -71,11 +71,24 @@ $defaults = [
 	'fromSubject' => 'shootproof-cli script execution report',
 ];
 
+$monologChannel = 'shootproof-cli';
+
+$monologFormat = "%level_name%: %message% %context%" . PHP_EOL;
+
+$monologVerbosity = [
+	0 => Logger::ERROR,
+	1 => Logger::NOTICE,
+	2 => Logger::DEBUG
+];
+
 return compact(
 	'summary',
 	'usage',
 	'description',
 	'options',
 	'validators',
-	'defaults'
+	'defaults',
+	'monologChannel',
+	'monologFormat',
+	'monologVerbosity'
 );
