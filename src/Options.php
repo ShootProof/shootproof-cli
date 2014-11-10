@@ -5,6 +5,7 @@ namespace compwright\ShootproofCli;
 use compwright\ShootproofCli\Validators\ValidatorException;
 use compwright\ShootproofCli\Validators\ValidatorInterface;
 use compwright\ShootproofCli\Validators\RequiredValidator;
+use compwright\ShootproofCli\Utility\OptionTransformer;
 
 class Options
 {
@@ -21,16 +22,9 @@ class Options
 
 	public function __set($key, $value)
 	{
-		try
+		if ($this->__get($key) !== $value && $this->validate($key, $value, TRUE))
 		{
-			if ($this->__get($key) !== $value && $this->validate($key, $value, TRUE))
-			{
-				$this->data[$key] = $value;
-			}
-		}
-		catch (ValidatorException $e)
-		{
-			throw $e;				
+			$this->data[$key] = $value;
 		}
 	}
 
@@ -146,25 +140,27 @@ class Options
 		return $this;
 	}
 
-	public function validate($option, $value, $skipRequired = FALSE)
+	public function validate($setting, $value, $skipRequired = FALSE)
 	{
-		if (empty($this->validators[$option]))
+		if (empty($this->validators[$setting]))
 		{
 			return TRUE;
 		}
 
-		foreach ($this->validators[$option] as $validator)
+		foreach ($this->validators[$setting] as $validator)
 		{
 			if ($skipRequired && $validator instanceof RequiredValidator)
 			{
 				continue;
 			}
 
-			if ( ! $validator($value, $option, $this->data))
+			if ( ! $validator($value, $setting, $this->data))
 			{
 				if ($this->throwExceptions)
 				{
-					throw new ValidatorException("Invalid {$option}, see help for usage instructions");
+					$transformer = new OptionTransformer;
+					$option = $transformer->untransformKey($setting);
+					throw new ValidatorException("Invalid --{$option}, see help for usage instructions");
 				}
 				else
 				{
@@ -178,15 +174,20 @@ class Options
 
 	public function validateAllRequired()
 	{
-		foreach ($this->validators as $option => $validators)
+		foreach ($this->validators as $setting => $validators)
 		{
 			foreach ($validators as $validator)
 			{
-				if ($validator instanceof RequiredValidator && ! $validator($this->__get($option), $option, $this->asArray()))
+				$value = $this->__get($setting);
+				$settings = $this->asArray();
+
+				if ($validator instanceof RequiredValidator && ! $validator($value, $setting, $settings))
 				{
 					if ($this->throwExceptions)
 					{
-						throw new ValidatorException("{$option} is required, see help for usage instructions");
+						$transformer = new OptionTransformer;
+						$option = $transformer->untransformKey($setting);
+						throw new ValidatorException("--{$option} is required, see help for usage instructions");
 					}
 					else
 					{

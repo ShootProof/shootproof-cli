@@ -18,7 +18,7 @@ use Sp_Api as ShootproofApi;
 use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 
-class PullCommand extends BaseCommand implements HelpableCommandInterface, ConfiguresOptionsInterface
+class PullCommand extends BaseCommand implements HelpableCommandInterface
 {
 	use HelpableCommandTrait;
 
@@ -49,21 +49,26 @@ TEXT;
 		'preview' => 'Preview this operation, but do not apply any changes',
 	];
 
-	public static function configureOptions(Options $options, ShootproofApi $api)
+	protected function getValidators()
 	{
-		$options->addValidators([
-			'event' => new ShootproofEventValidator($api),
-			'album' => new ShootproofAlbumValidator($api),
-		]);
-
-		$options->setDefault('target', function(Options $options)
-		{
-			return $options->album
-			     ? 'album'
-			     : 'event';
-		});
+		return [
+			'event' => new ShootproofEventValidator($this->api),
+			'album' => new ShootproofAlbumValidator($this->api),
+		];
 	}
 
+	protected function getDefaults()
+	{
+		return [
+			'target' => function(Options $options)
+			{
+				return $options->album
+				     ? 'album'
+				     : 'event';
+			}
+		];
+	}
+	
 	protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
 	{
 		// If the directory doesn't exist, create it and any parent dirs
@@ -81,8 +86,7 @@ TEXT;
 		}
 
 		// Reload the options and read the directory config file
-		$options = $optionsFactory->newInstance();
-		self::configureOptions($options, $this->api);
+		$options = $optionsFactory->newInstance([], $this->getValidators(), $this->getDefaults());
 		$configPath = new TildeExpander($dir) . '/.shootproof';
 		$configLoader = new DotenvLoader($configPath);
 		try

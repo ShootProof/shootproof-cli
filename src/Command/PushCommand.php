@@ -17,7 +17,7 @@ use Sp_Api as ShootproofApi;
 use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 
-class PushCommand extends BaseCommand implements HelpableCommandInterface, ConfiguresOptionsInterface
+class PushCommand extends BaseCommand implements HelpableCommandInterface
 {
 	use HelpableCommandTrait;
 	
@@ -76,28 +76,32 @@ TEXT;
 		'preview' => 'Preview this operation, but do not apply any changes',
 	];
 
-	public static function configureOptions(Options $options, ShootproofApi $api)
+	protected function getValidators()
 	{
-		$options->addValidators([
+		return [
 			'target' => new ValuesValidator(['event', 'album']),
-			'event' => new ShootproofEventValidator($api),
-			'album' => new ShootproofAlbumValidator($api),
-			'parent-album' => new ShootproofAlbumValidator($api),
-		]);
+			'event' => new ShootproofEventValidator($this->api),
+			'album' => new ShootproofAlbumValidator($this->api),
+			'parent-album' => new ShootproofAlbumValidator($this->api),
+		];
+	}
 
-		$options->setDefault('target', function(Options $options)
-		{
-			return $options->album
-			     ? 'album'
-			     : 'event';
-		});
+	protected function getDefaults()
+	{
+		return [
+			'target' => function(Options $options)
+			{
+				return $options->album
+				     ? 'album'
+				     : 'event';
+			}
+		];
 	}
 
 	protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
 	{
 		// Reload the options and read the directory config file
-		$options = $optionsFactory->newInstance();
-		self::configureOptions($options, $this->api);
+		$options = $optionsFactory->newInstance([], $this->getValidators(), $this->getDefaults());
 		$configPath = new TildeExpander($dir) . '/.shootproof';
 		$configLoader = new DotenvLoader($configPath);
 		try

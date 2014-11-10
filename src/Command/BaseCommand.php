@@ -11,15 +11,13 @@ use Aura\Cli\Context;
 use Monolog\Logger;
 use Sp_Api as ShootproofApi;
 
-abstract class BaseCommand implements ConfiguresOptionsInterface
+abstract class BaseCommand
 {
 	protected $stdio;
 	protected $logger;
 	protected $api;
 
 	static protected $options = [];
-
-	public static function configureOptions(Options $options, ShootproofApi $api) {}
 
 	public function __construct(Stdio $stdio, Logger $logger, ShootproofApi $api)
 	{
@@ -41,7 +39,6 @@ abstract class BaseCommand implements ConfiguresOptionsInterface
 
 		// Load base options
 		$baseOptions = $optionsFactory->newInstance();
-		self::configureOptions($baseOptions, $this->api);
 		$baseOptions->validateAllRequired();
 
 		if ($baseOptions->preview)
