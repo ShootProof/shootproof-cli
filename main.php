@@ -40,7 +40,7 @@ date_default_timezone_set($options->timezone);
 
 // Configure Monolog
 $logger = new Logger($config['monologChannel']);
-$formatter = new LineFormatter($config['monologFormat']);
+$formatter = new LineFormatter($config['monologFormat'], NULL, TRUE, TRUE); // custom line format, allow line breaks, ignore empty context
 $handler = new StreamHandler("php://stdout", $config['monologVerbosity'][$options->verbosity]);
 $handler->setFormatter($formatter);
 $logger->pushHandler($handler); // log to screen

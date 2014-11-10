@@ -59,9 +59,13 @@ abstract class BaseCommand
 				{
 					throw $e;
 				}
+				elseif ($baseOptions->verbosity == 2)
+				{
+					$this->logger->addError($e, []);
+				}
 				else
 				{
-					$this->logger->addError($e->getMessage(), [$e]);
+					$this->logger->addError($e->getMessage(), []);
 				}
 			}
 		}
