@@ -3,6 +3,7 @@
 namespace compwright\ShootproofCli;
 
 set_time_limit(0);
+date_default_timezone_set('UTC');
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -64,6 +65,14 @@ if ($optionsFactory->getLastError())
 else
 {
 	$logger->addDebug('Config file found', [$options->config]);
+}
+if ($options->email)
+{
+	$logger->addDebug('Will send email report', [
+		'to' => $options->email,
+		'from' => $options->emailFrom,
+		'subject' => $options->emailSubject,
+	]);
 }
 
 // Configure the ShootProof API client

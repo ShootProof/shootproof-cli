@@ -60,7 +60,7 @@ $validators = [
 	'appId' => new RequiredValidator,
 	'accessToken' => new RequiredValidator,
 	'email' => new EmailValidator,
-	'fromEmail' => new EmailValidator,
+	'emailFrom' => new EmailValidator,
 ];
 
 $defaults = [
@@ -68,7 +68,7 @@ $defaults = [
 	'verbosity' => 1,
 	'config' => '~/.shootproof',
 	'retryLimit' => 3,
-	'fromSubject' => 'shootproof-cli script execution report',
+	'emailSubject' => 'shootproof-cli script execution report (' . date('Y-m-d H:i:s') . ')',
 ];
 
 $monologChannel = 'shootproof-cli';
