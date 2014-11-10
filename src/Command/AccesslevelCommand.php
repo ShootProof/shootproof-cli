@@ -7,10 +7,13 @@ use compwright\ShootproofCli\OptionsFactory;
 use compwright\ShootproofCli\Validators\ShootproofEventValidator;
 use compwright\ShootproofCli\Validators\ValuesValidator;
 use compwright\ShootproofCli\Validators\RequiredValidator;
+use compwright\ShootproofCli\Validators\CallbackValidator;
+use compwright\ShootproofCli\Utility\TildeExpander;
 use Aura\Cli\Context;
 use Sp_Api as ShootproofApi;
+use josegonzalez\Dotenv\Loader as DotenvLoader;
 
-class AccesslevelCommand extends BaseCommand implements HelpableCommandInterface, ConfiguresOptionsInterface
+class AccesslevelCommand extends BaseCommand implements HelpableCommandInterface
 {
 	use HelpableCommandTrait;
 
@@ -30,34 +33,83 @@ Changes the access level and password for a ShootProof event.
 TEXT;
 
 	public static $options = [
-		'access-level:' => 'ShootProof access level',
 		'event:' => 'ShootProof event ID',
+		'access-level:' => 'ShootProof access level',
+		'password:' => 'ShootProof password (required for certain access levels)',
 	];
 
-	public static function configureOptions(Options $options, ShootproofApi $api)
+	protected function getValidators()
 	{
-		$options->addValidators([
-			'access-level' => [
-				new RequiredValidator,
+		return [
+			'accessLevel' => [
 				new ValuesValidator([
 					'public_no_password',
 					'public_password',
 					'private_no_password',
 					'private_password',
-				])
+				]),
+				new RequiredValidator,
 			],
-			'event' => new ShootproofEventValidator($api),
-		]);
+			'event' => [
+				new RequiredValidator,
+				new ShootproofEventValidator($this->api),
+			],
+			'password' => new CallbackValidator(function($value, $setting, array $settings)
+			{
+				// Require a password for certain access levels
+				switch ($settings['accessLevel'])
+				{
+					case 'public_password':
+					case 'private_password':
+						// Was the --password option passed with no value?
+						if ($value === TRUE)
+						{
+							return FALSE;
+						}
+
+						$validator = new RequiredValidator;
+						$settings[$setting] = $value;
+						return $validator($value, $setting, $settings);
+				}
+
+				return TRUE;
+			}),
+		];
 	}
 
-	public function __invoke(Context $context, OptionsFactory $optionsFactory)
+	protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
 	{
-		/*
-		    Start log buffer
-		    Load command options
-		      Load from .shootproof in directory
-		      Load from command line
-		    Set event access level
-		 */
+		// Reload the options and read the directory config file
+		$options = $optionsFactory->newInstance([], $this->getValidators());
+		$configPath = new TildeExpander($dir) . '/.shootproof';
+		$configLoader = new DotenvLoader($configPath);
+		try
+		{
+			$configData = $configLoader->parse()->toArray();
+			$options->loadOptionData($configData, FALSE); // don't overwrite CLI data
+			$this->logger->addDebug('ShootProof settings file found', [$configPath, $configData]);
+		}
+		catch (\InvalidArgumentException $e)
+		{
+			// ignore
+			$this->logger->addDebug('ShootProof settings file not found', [$configPath]);
+		}
+
+		// Make sure all required options are present
+		//var_dump($options->asArray());
+		$options->validateAllRequired();
+		$options->validate('password', $options->password);
+
+		// Set the event access level
+		$this->logger->addNotice('Setting access level', [
+			'event' => $options->event,
+			'level' => $options->accessLevel,
+			'password' => $options->password ? str_repeat('*', strlen($options->password)) : NULL,
+		]);
+		if ( ! $baseOptions->preview)
+		{
+			$result = $this->api->setEventAccessLevel($options->event, $options->accessLevel, $options->password);
+			$this->logger->addDebug('Operation completed', $result);
+		}
 	}
 }
