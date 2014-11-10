@@ -28,4 +28,24 @@ class OptionTransformerTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ArrayObject', $transformer);
         $this->assertEquals($expected, $transformer->getArrayCopy());
     }
+
+    /**
+     * @dataProvider dataProvider
+     */
+    public function testUntransform($input, $expected)
+    {
+        $transformer = new OptionTransformer;
+        $this->assertEquals($expected, $transformer->untransformKey($input));
+    }
+
+    public function dataProvider()
+    {
+        return [
+            [ 'Option', 'option' ],
+            [ 'optionA', 'option-a' ],
+            [ 'option-b', 'option-b' ],
+            [ 'option_c', 'option_c' ],
+            [ 'OptionD', 'option-d' ],
+        ];
+    }
 }
