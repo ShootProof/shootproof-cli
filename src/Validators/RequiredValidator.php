@@ -18,7 +18,7 @@ class RequiredValidator implements ValidatorInterface
 			return FALSE;
 		}
 
-		if (!$this->strict)
+		if ( ! $this->strict)
 		{
 			return (boolean) $value;
 		}

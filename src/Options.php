@@ -154,7 +154,7 @@ class Options
 				continue;
 			}
 
-			if ( ! $validator($value, $setting, $this->data))
+			if ( ! $validator($value, $setting, $this->asArray()))
 			{
 				if ($this->throwExceptions)
 				{
@@ -165,6 +165,34 @@ class Options
 				else
 				{
 					return FALSE;
+				}
+			}
+		}
+
+		return TRUE;
+	}
+
+	public function validateAll()
+	{
+		foreach ($this->validators as $setting => $validators)
+		{
+			foreach ($validators as $validator)
+			{
+				$value = $this->__get($setting);
+				$settings = $this->asArray();
+
+				if ( ! $validator($value, $setting, $settings))
+				{
+					if ($this->throwExceptions)
+					{
+						$transformer = new OptionTransformer;
+						$option = $transformer->untransformKey($setting);
+						throw new ValidatorException("Invalid --{$option}, see help for usage instructions");
+					}
+					else
+					{
+						return FALSE;
+					}
 				}
 			}
 		}
