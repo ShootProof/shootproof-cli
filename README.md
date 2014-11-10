@@ -27,3 +27,17 @@ haltOnError=true
 retryLimit=<limit>
 email=<email>
 ```
+
+## Required Permissions
+
+For this script to operate properly, you must have an access token authorized for the following scopes:
+
+* sp.album.create
+* sp.album.get_photos
+* sp.event.create
+* sp.event.get_photos
+* sp.event.set_access_level
+* sp.photo.upload
+* sp.photo.delete
+
+Non-expiring access tokens are available from ShootProof on request.
