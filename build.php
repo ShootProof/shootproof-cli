@@ -1,19 +1,22 @@
 #!/usr/bin/env php
 <?php
 
-// start buffering. Mandatory to modify stub.
+$name = 'shootproof-cli.phar';
+$path = __DIR__ . '/bin/' . $name;
+
+$phar = new Phar($path, FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::KEY_AS_FILENAME, $name);
 $phar->startBuffering();
 
-// Get the default stub. You can create your own if you have specific needs
-$defaultStub = $phar->createDefaultStub('shootproof-cli.php');
-
-// Adding files
+// Add all PHP files
 $phar->buildFromDirectory(__DIR__, '/\.php$/');
 
 // Create a custom stub to add the shebang
-$stub = "#!/usr/bin/env php\n" . $defaultStub;
-
-// Add the stub
+$stub = "#!/usr/bin/env php\n"
+      . $phar->createDefaultStub('main.php');
 $phar->setStub($stub);
 
+// Close the file
 $phar->stopBuffering();
+
+// Make the phar executable
+chmod($path, 0755);
