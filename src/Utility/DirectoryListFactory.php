@@ -36,7 +36,14 @@ class DirectoryListFactory
 		if ($i > -1)
 		{
 			$fileList = array_slice($optionData, $i);
-			$this->dirList = $this->excludeFiles($fileList);
+			$this->dirList = [];
+			foreach ($fileList as $path)
+			{
+				foreach ($this->excludeFiles($this->normalizePathExpression($path)) as $normalizedDir)
+				{
+					array_push($this->dirList, $normalizedDir);
+				}
+			}
 			$this->source = self::SOURCE_COMMAND_LINE;
 		}
 	}
@@ -79,11 +86,27 @@ class DirectoryListFactory
 	protected function normalizePathExpression($expression)
 	{
 		// expand tilde, expand wildcards, expand to absolute path
-		return array_map('realpath', glob(new TildeExpander($expression)));
+		return array_map(
+			function($path)
+			{
+				if ($normalizedPath = realpath($path))
+				{
+					return $normalizedPath;
+				}
+				else
+				{
+					return $path;
+				}
+			},
+			glob(new TildeExpander($expression), GLOB_NOCHECK)
+		);
 	}
 	
 	protected function excludeFiles(array $list)
 	{
-		return array_filter($list, 'is_dir');
+		return array_filter($list, function($path)
+		{
+			return ! is_file($path);
+		});
 	}
 }

@@ -55,10 +55,15 @@ if ($options->email)
 // Use Monolog as the error handler
 ErrorHandler::register($logger);
 
+// Misc. debug messages
 $logger->addDebug('Timezone set', [$options->timezone]);
 if ($optionsFactory->getLastError())
 {
 	$logger->addDebug('Config file not found', [$options->config]);
+}
+else
+{
+	$logger->addDebug('Config file found', [$options->config]);
 }
 
 // Configure the ShootProof API client

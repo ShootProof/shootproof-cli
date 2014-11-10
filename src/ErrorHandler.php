@@ -16,7 +16,7 @@ class ErrorHandler extends MonologErrorHandler
             $this->logger->log(
                 $this->uncaughtExceptionLevel === null ? LogLevel::ERROR : $this->uncaughtExceptionLevel,
                 $e->getMessage(),
-                array('exception' => $e)
+                array()
             );
         }
         else

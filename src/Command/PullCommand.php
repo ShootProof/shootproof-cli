@@ -9,8 +9,6 @@ use compwright\ShootproofCli\Validators\ShootproofAlbumValidator;
 use compwright\ShootproofCli\Validators\ValidatorException;
 use compwright\ShootproofCli\Utility\FileSetCalculator;
 use compwright\ShootproofCli\Utility\TildeExpander;
-use compwright\ShootproofCli\Utility\DirectoryListFactory;
-use compwright\ShootproofCli\Utility\StdinReader;
 use compwright\ShootproofCli\Utility\ShootproofFile;
 use compwright\ShootproofCli\Utility\ResultPager;
 use compwright\ShootproofCli\Utility\FileDownloader;
@@ -66,50 +64,21 @@ TEXT;
 		});
 	}
 
-	public function __invoke(Context $context, OptionsFactory $optionsFactory)
+	protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
 	{
-		$getopt = $context->getopt(array_keys(self::$options));
-
-		// Get directory list
-		$dirListFactory = new DirectoryListFactory;
-		$dirListFactory->loadFromCommandline($getopt->get(), 2);
-		$dirListFactory->loadFromStdin(new StdinReader(3));
-		$dirList = $dirListFactory->getList();
-		$this->logger->addDebug('Found directories', [count($dirList)]);
-
-		// Load base options
-		$baseOptions = $optionsFactory->newInstance();
-		self::configureOptions($baseOptions, $this->api);
-		$baseOptions->validateAllRequired();
-
-		if ($baseOptions->preview)
+		// If the directory doesn't exist, create it and any parent dirs
+		if ( ! file_exists($dir))
 		{
-			$this->logger->addNotice('PREVIEW MODE');
-		}
-
-		foreach ($dirList as $dir)
-		{
-			try
+			if ($baseOptions->preview || @mkdir($dir, 0777, TRUE))
 			{
-				$this->processDirectory($dir, $baseOptions, $optionsFactory);
+				$this->logger->addNotice('Created directory', [$dir]);
 			}
-			catch (\Exception $e)
+			else
 			{
-				if ($baseOptions->haltOnError)
-				{
-					throw $e;
-				}
-				else
-				{
-					// proceed to the next directory
-				}
+				$this->logger->addError('Failed to create directory', [$dir]);
+				return;
 			}
 		}
-	}
-
-	protected function processDirectory($dir, $baseOptions, $optionsFactory)
-	{
-		$this->logger->addNotice('In directory', [$dir]);
 
 		// Reload the options and read the directory config file
 		$options = $optionsFactory->newInstance();
@@ -120,12 +89,12 @@ TEXT;
 		{
 			$configData = $configLoader->parse()->toArray();
 			$options->loadOptionData($configData, FALSE); // don't overwrite CLI data
-			$this->logger->addDebug('Config file found', [$configPath, $configData]);
+			$this->logger->addDebug('ShootProof settings file found', [$configPath, $configData]);
 		}
 		catch (\InvalidArgumentException $e)
 		{
 			// ignore
-			$this->logger->addDebug('Config file not found', [$configPath]);
+			$this->logger->addDebug('ShootProof settings file not found', [$configPath]);
 		}
 
 		// Make sure all required options are present
@@ -243,7 +212,7 @@ TEXT;
 				}
 
 				$downloader->download($destination, TRUE);
-				$this->logger->addDebug('Download completed', [$downloader->result['http_code']]);
+				$this->logger->addDebug('Download completed', [$downloader->result['download_content_length']]);
 				return;
 			}
 			catch (\RuntimeException $e)
