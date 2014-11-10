@@ -14,6 +14,7 @@ use compwright\ShootproofCli\Utility\StdinReader;
 use compwright\ShootproofCli\Utility\ShootproofFile;
 use compwright\ShootproofCli\Utility\ResultPager;
 use compwright\ShootproofCli\Utility\FileDownloader;
+use compwright\ShootproofCli\Utility\ConfigWriter;
 use Aura\Cli\Context;
 use Sp_Api as ShootproofApi;
 use josegonzalez\Dotenv\Loader as DotenvLoader;
@@ -204,18 +205,25 @@ TEXT;
 		}
 
 		// Write ShootProof metadata to the directory
-		$success = $this->writeConfig($configPath, [
-			'target' => $options->target,
-			$options->target => $options->{$options->target}, // event or album
-		]);
-
-		if ($success !== FALSE)
+		try
 		{
+			$writer = new ConfigWriter([
+				'target' => $options->target,
+				$options->target => $options->{$options->target}, // event or album
+			]);
+			if ( ! $baseOptions->preview)
+			{
+				$writer->write($configPath);
+			}
 			$this->logger->addDebug('ShootProof settings file saved', [$configPath]);
 		}
-		else
+		catch (\InvalidArgumentException $e)
 		{
-			$this->logger->addWarning('ShootProof settings is unwritable', [$configPath]);
+			$this->logger->addWarning('ShootProof settings file is unwritable', [$configPath]);
+		}
+		catch (\RuntimeException $e)
+		{
+			$this->logger->addWarning('Failed writing ShootProof settings file', [$configPath]);
 		}
 	}
 
@@ -254,22 +262,5 @@ TEXT;
 		}
 
 		$this->logger->addError('Download failed on final attempt', [$downloader->result['http_code']]);
-	}
-
-	protected function writeConfig($path, array $config)
-	{
-		$contents = '';
-		foreach ($config as $k => $v)
-		{
-			if (strpos($v, ' ') !== FALSE)
-			{
-				// Quote value, escape quotes that happen to be in the value
-				$v = '"' . str_replace('"', '\\"', $v) . '"';
-			}
-
-			$contents .= $k . '=' . $v . PHP_EOL;
-		}
-
-		return @file_put_contents($path, $contents);
 	}
 }
