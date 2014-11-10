@@ -2,6 +2,17 @@
 
 Command line client for [ShootProof](http://shootproof.com)
 
+## Installation
+
+[Download shootproof-cli.phar](https://bitbucket.org/compwright/shootproof-cli/src/928535f7bcf8b8270f3a2d9c3f6920edec46150a/bin/shootproof-cli.phar?at=master)
+
+Move this file to a convenient location:
+
+```
+$ wget https://bitbucket.org/compwright/shootproof-cli/src/928535f7bcf8b8270f3a2d9c3f6920edec46150a/bin/shootproof-cli.phar?at=master
+$ mv ./shootproof-cli.phar /usr/local/bin/shootproof-cli
+```
+
 ## Usage
 
 ```/path/to/shootproof.phar <command> [options]```
