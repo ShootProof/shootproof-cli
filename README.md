@@ -52,3 +52,11 @@ For this script to operate properly, you must have an access token authorized fo
 * sp.photo.delete
 
 Non-expiring access tokens are available from ShootProof on request.
+
+## License
+
+MIT license
+
+## Disclaimer
+
+While every effort has been made to deliver a high quality product, this product is not guaranteed to be free from defects. The software is provided "as is," and you use the software at your own risk. No warranty is made as to performance, merchantability, fitness for a particular purpose, or any other warranties whether expressed or implied. No oral or written communication from or information provided with this software shall create a warranty. Under no circumstances shall the publisher or author be liable for direct, indirect, special, incidental, or consequential damages resulting from the use, misuse, or inability to use this software, even if the publisher or auther has been advised of the possibility of such damages. These exclusions and limitations may not apply in all jurisdictions. You may have additional rights and some of these limitations may not apply to you.
