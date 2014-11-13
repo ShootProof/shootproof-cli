@@ -1,5 +1,5 @@
 {
-    "name": "compwright/shootproof-cli",
+    "name": "shootproof/shootproof-cli",
     "description": "Command line client for ShootProof (http://shootproof.com)",
     "keywords": ["shootproof", "cli", "client"],
     "license": "MIT",
@@ -25,5 +25,6 @@
             "compwright\\ShootproofCli\\Test\\": ["tests/src/"],
             "compwright\\ShootproofCli\\": ["src/"]
         }
-    }
+    },
+    "bin": ["bin/shootproof-cli.phar"]
 }
