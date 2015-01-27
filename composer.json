@@ -22,9 +22,12 @@
         "aura/cli": "~2.0",
         "aura/di": "~2.0",
         "monolog/monolog": "~1.11",
-        "phine/phar": "~1.0",
         "shootproof/php-sdk": "~1.0",
         "symfony/finder": "~2.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4",
+        "squizlabs/php_codesniffer": "~2.2"
     },
     "autoload": {
         "psr-4": {
