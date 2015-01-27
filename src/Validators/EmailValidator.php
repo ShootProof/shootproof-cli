@@ -1,6 +1,6 @@
 <?php
 
-namespace compwright\ShootproofCli\Validators;
+namespace ShootProof\Cli\Validators;
 
 class EmailValidator implements ValidatorInterface
 {

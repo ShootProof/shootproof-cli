@@ -1,11 +1,11 @@
 <?php
 
-namespace compwright\ShootproofCli;
+namespace ShootProof\Cli;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Monolog\ErrorHandler as MonologErrorHandler;
-use compwright\ShootproofCli\Validators\ValidatorException;
+use ShootProof\Cli\Validators\ValidatorException;
 
 class ErrorHandler extends MonologErrorHandler
 {

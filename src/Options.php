@@ -1,11 +1,11 @@
 <?php
 
-namespace compwright\ShootproofCli;
+namespace ShootProof\Cli;
 
-use compwright\ShootproofCli\Validators\ValidatorException;
-use compwright\ShootproofCli\Validators\ValidatorInterface;
-use compwright\ShootproofCli\Validators\RequiredValidator;
-use compwright\ShootproofCli\Utility\OptionTransformer;
+use ShootProof\Cli\Validators\ValidatorException;
+use ShootProof\Cli\Validators\ValidatorInterface;
+use ShootProof\Cli\Validators\RequiredValidator;
+use ShootProof\Cli\Utility\OptionTransformer;
 
 class Options
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace compwright\ShootproofCli\Command;
+namespace ShootProof\Cli\Command;
 
-use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\OptionsFactory;
-use compwright\ShootproofCli\Validators\ShootproofEventValidator;
-use compwright\ShootproofCli\Validators\ValuesValidator;
-use compwright\ShootproofCli\Validators\RequiredValidator;
-use compwright\ShootproofCli\Validators\CallbackValidator;
-use compwright\ShootproofCli\Utility\TildeExpander;
+use ShootProof\Cli\Options;
+use ShootProof\Cli\OptionsFactory;
+use ShootProof\Cli\Validators\ShootproofEventValidator;
+use ShootProof\Cli\Validators\ValuesValidator;
+use ShootProof\Cli\Validators\RequiredValidator;
+use ShootProof\Cli\Validators\CallbackValidator;
+use ShootProof\Cli\Utility\TildeExpander;
 use Aura\Cli\Context;
 use Sp_Api as ShootproofApi;
 use josegonzalez\Dotenv\Loader as DotenvLoader;

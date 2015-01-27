@@ -1,11 +1,11 @@
 <?php
 
-use compwright\ShootproofCli\Validators\RequiredValidator;
-use compwright\ShootproofCli\Validators\RangeValidator;
-use compwright\ShootproofCli\Validators\FileValidator;
-use compwright\ShootproofCli\Validators\EmailValidator;
-use compwright\ShootproofCli\Validators\CallbackValidator;
-use compwright\ShootproofCli\Validators\TimezoneValidator;
+use ShootProof\Cli\Validators\RequiredValidator;
+use ShootProof\Cli\Validators\RangeValidator;
+use ShootProof\Cli\Validators\FileValidator;
+use ShootProof\Cli\Validators\EmailValidator;
+use ShootProof\Cli\Validators\CallbackValidator;
+use ShootProof\Cli\Validators\TimezoneValidator;
 use Monolog\Logger;
 
 $summary = 'Command line client for ShootProof';

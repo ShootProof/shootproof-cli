@@ -1,9 +1,9 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Utility\TildeExpander;
+use ShootProof\Cli\Utility\TildeExpander;
 
 class TildeExpanderTest extends PHPUnit_Framework_TestCase
 {

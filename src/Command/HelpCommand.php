@@ -1,6 +1,6 @@
 <?php
 
-namespace compwright\ShootproofCli\Command;
+namespace ShootProof\Cli\Command;
 
 use Aura\Cli\Help;
 use Aura\Cli\Stdio;

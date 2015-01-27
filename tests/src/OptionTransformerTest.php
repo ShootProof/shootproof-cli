@@ -1,9 +1,9 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Utility\OptionTransformer;
+use ShootProof\Cli\Utility\OptionTransformer;
 
 class OptionTransformerTest extends PHPUnit_Framework_TestCase
 {

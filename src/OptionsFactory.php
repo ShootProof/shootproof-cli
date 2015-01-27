@@ -1,10 +1,10 @@
 <?php
 
-namespace compwright\ShootproofCli;
+namespace ShootProof\Cli;
 
-use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\Utility\OptionTransformer;
-use compwright\ShootproofCli\Utility\TildeExpander;
+use ShootProof\Cli\Options;
+use ShootProof\Cli\Utility\OptionTransformer;
+use ShootProof\Cli\Utility\TildeExpander;
 use Aura\Cli\Context;
 use josegonzalez\Dotenv\Loader as DotenvLoader;
 

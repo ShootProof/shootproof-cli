@@ -1,9 +1,9 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Utility\ResultPager;
+use ShootProof\Cli\Utility\ResultPager;
 
 class ResultPagerTest extends PHPUnit_Framework_TestCase
 {

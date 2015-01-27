@@ -1,6 +1,6 @@
 <?php
 
-namespace compwright\ShootproofCli\Utility;
+namespace ShootProof\Cli\Utility;
 
 class ConfigWriter extends \ArrayObject
 {

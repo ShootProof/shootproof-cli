@@ -1,16 +1,16 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Validators\EmailValidator;
-use compwright\ShootproofCli\Validators\FileValidator;
-use compwright\ShootproofCli\Validators\RangeValidator;
-use compwright\ShootproofCli\Validators\RequiredValidator;
-use compwright\ShootproofCli\Validators\ValuesValidator;
-use compwright\ShootproofCli\Validators\CallbackValidator;
-use compwright\ShootproofCli\Validators\TimezoneValidator;
-use compwright\ShootproofCli\Validators\ValidatorInterface;
+use ShootProof\Cli\Validators\EmailValidator;
+use ShootProof\Cli\Validators\FileValidator;
+use ShootProof\Cli\Validators\RangeValidator;
+use ShootProof\Cli\Validators\RequiredValidator;
+use ShootProof\Cli\Validators\ValuesValidator;
+use ShootProof\Cli\Validators\CallbackValidator;
+use ShootProof\Cli\Validators\TimezoneValidator;
+use ShootProof\Cli\Validators\ValidatorInterface;
 
 class ValidatorTest extends PHPUnit_Framework_TestCase
 {

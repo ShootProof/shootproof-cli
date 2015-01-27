@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "compwright\\ShootproofCli\\": ["src/"]
+            "ShootProof\\Cli\\": ["src/"]
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "compwright\\ShootproofCli\\Test\\": ["tests/src/"]
+            "ShootProof\\Cli\\Test\\": ["tests/src/"]
         }
     },
     "extra": {

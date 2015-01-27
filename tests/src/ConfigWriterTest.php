@@ -1,9 +1,9 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Utility\ConfigWriter;
+use ShootProof\Cli\Utility\ConfigWriter;
 
 class ConfigWriterTest extends PHPUnit_Framework_TestCase
 {

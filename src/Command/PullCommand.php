@@ -1,18 +1,18 @@
 <?php
 
-namespace compwright\ShootproofCli\Command;
+namespace ShootProof\Cli\Command;
 
-use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\OptionsFactory;
-use compwright\ShootproofCli\Validators\ShootproofEventValidator;
-use compwright\ShootproofCli\Validators\ShootproofAlbumValidator;
-use compwright\ShootproofCli\Validators\ValidatorException;
-use compwright\ShootproofCli\Utility\FileSetCalculator;
-use compwright\ShootproofCli\Utility\TildeExpander;
-use compwright\ShootproofCli\Utility\ShootproofFile;
-use compwright\ShootproofCli\Utility\ResultPager;
-use compwright\ShootproofCli\Utility\FileDownloader;
-use compwright\ShootproofCli\Utility\ConfigWriter;
+use ShootProof\Cli\Options;
+use ShootProof\Cli\OptionsFactory;
+use ShootProof\Cli\Validators\ShootproofEventValidator;
+use ShootProof\Cli\Validators\ShootproofAlbumValidator;
+use ShootProof\Cli\Validators\ValidatorException;
+use ShootProof\Cli\Utility\FileSetCalculator;
+use ShootProof\Cli\Utility\TildeExpander;
+use ShootProof\Cli\Utility\ShootproofFile;
+use ShootProof\Cli\Utility\ResultPager;
+use ShootProof\Cli\Utility\FileDownloader;
+use ShootProof\Cli\Utility\ConfigWriter;
 use Aura\Cli\Context;
 use Sp_Api as ShootproofApi;
 use josegonzalez\Dotenv\Loader as DotenvLoader;

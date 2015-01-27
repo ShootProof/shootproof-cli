@@ -1,6 +1,6 @@
 <?php
 
-namespace compwright\ShootproofCli;
+namespace ShootProof\Cli;
 
 set_time_limit(0);
 date_default_timezone_set('UTC');
@@ -9,9 +9,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $config = require __DIR__ . '/config.php';
 
-use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\Utility\OptionTransformer;
-use compwright\ShootproofCli\Validators\ValidatorException;
+use ShootProof\Cli\Options;
+use ShootProof\Cli\Utility\OptionTransformer;
+use ShootProof\Cli\Validators\ValidatorException;
 use Aura\Di\Container;
 use Aura\Di\Factory as ContainerFactory;
 use Aura\Cli\Status;
@@ -32,7 +32,7 @@ $context = $di->newInstance('Aura\Cli\Context');
 $getopt = $context->getopt(array_keys($config['options']));
 
 // Set up the options container
-$optionsFactory = $di->newInstance('compwright\ShootproofCli\OptionsFactory');
+$optionsFactory = $di->newInstance('ShootProof\Cli\OptionsFactory');
 $options = $optionsFactory->newInstance(array_keys($config['options']), $config['validators'], $config['defaults']);
 
 // Set the timezone
@@ -81,7 +81,7 @@ $api = new Sp_Api($options->accessToken);
 // Finish configuring the DI container, and lock it
 $di->set('Logger', $logger);
 $di->set('ShootproofApi', $api);
-$di->newInstance('compwright\ShootproofCli\DependencyConfig')->define($di);
+$di->newInstance('ShootProof\Cli\DependencyConfig')->define($di);
 $di->lock();
 
 // Configure the Help writer

@@ -1,17 +1,15 @@
 <?php
 
-error_reporting(-1);
+error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('UTC');
 
-$vendorPos = strpos(__DIR__, 'vendor/compwright/shootproof-cli');
-if ($vendorPos !== FALSE)
-{
-    // Package has been cloned within another composer package, resolve path to autoloader
-    $vendorDir = substr(__DIR__, 0, $vendorPos) . 'vendor/';
-    require $vendorDir . 'autoload.php';
+// Ensure that composer has installed all dependencies
+if (!file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    die("Dependencies must be installed using composer:\n\nphp composer.phar install --dev\n\n"
+        . "See http://getcomposer.org for help with installing composer\n");
 }
-else
-{
-    // Package itself (cloned standalone)
-    require __DIR__ . '/../vendor/autoload.php';
-}
+
+// Include the Composer autoloader
+$loader = include realpath(__DIR__ . '/../vendor/autoload.php');
+$loader->addPsr4('ShootProof\\Cli\\', realpath(__DIR__ . '/../src'));
+$loader->addPsr4('ShootProof\\Cli\\Test\\', realpath(__DIR__ . '/src'));

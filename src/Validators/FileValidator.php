@@ -1,8 +1,8 @@
 <?php
 
-namespace compwright\ShootproofCli\Validators;
+namespace ShootProof\Cli\Validators;
 
-use compwright\ShootproofCli\Utility\TildeExpander;
+use ShootProof\Cli\Utility\TildeExpander;
 
 class FileValidator implements ValidatorInterface
 {

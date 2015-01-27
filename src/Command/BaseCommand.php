@@ -1,11 +1,11 @@
 <?php
 
-namespace compwright\ShootproofCli\Command;
+namespace ShootProof\Cli\Command;
 
-use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\OptionsFactory;
-use compwright\ShootproofCli\Utility\DirectoryListFactory;
-use compwright\ShootproofCli\Utility\StdinReader;
+use ShootProof\Cli\Options;
+use ShootProof\Cli\OptionsFactory;
+use ShootProof\Cli\Utility\DirectoryListFactory;
+use ShootProof\Cli\Utility\StdinReader;
 use Aura\Cli\Stdio;
 use Aura\Cli\Context;
 use Monolog\Logger;

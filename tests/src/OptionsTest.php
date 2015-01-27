@@ -1,11 +1,11 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Options;
-use compwright\ShootproofCli\Validators\EmailValidator;
-use compwright\ShootproofCli\Validators\RequiredValidator;
+use ShootProof\Cli\Options;
+use ShootProof\Cli\Validators\EmailValidator;
+use ShootProof\Cli\Validators\RequiredValidator;
 
 class OptionsTest extends PHPUnit_Framework_TestCase
 {

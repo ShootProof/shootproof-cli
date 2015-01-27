@@ -1,5 +1,5 @@
 <?php
 
-namespace compwright\ShootproofCli\Validators;
+namespace ShootProof\Cli\Validators;
 
 class ValidatorException extends \Exception {}

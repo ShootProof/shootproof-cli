@@ -1,9 +1,9 @@
 <?php
 
-namespace compwright\ShootproofCli\Test;
+namespace ShootProof\Cli\Test;
 
 use \PHPUnit_Framework_TestCase;
-use compwright\ShootproofCli\Utility\FileSetCalculator;
+use ShootProof\Cli\Utility\FileSetCalculator;
 
 class FileSetCalculatorTest extends PHPUnit_Framework_TestCase
 {
