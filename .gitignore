@@ -1,4 +1,7 @@
-.shootproof
+*.phar
 .DS_Store
+.shootproof
+/build/
 /vendor/
 composer.lock
+phpunit.xml
