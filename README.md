@@ -1,21 +1,28 @@
-# shootproof-cli
+# ShootProof Command Line Tool
 
-Command line client for [ShootProof](http://shootproof.com)
+Command line client for interacting with the [ShootProof API](http://developer.shootproof.com).
 
 ## Installation
 
-[Download shootproof-cli.phar](https://bitbucket.org/compwright/shootproof-cli/src/928535f7bcf8b8270f3a2d9c3f6920edec46150a/bin/shootproof-cli.phar?at=master)
+_Your system must have PHP 5.4 or later installed in order to use the ShootProof command line tool._
 
-Move this file to a convenient location:
+Download the `shootproof-cli.phar` file from the [latest release](https://github.com/shootproof/shootproof-cli/releases) and place it in `/usr/local/bin` or wherever it's accessible from your `PATH`.
 
+``` bash
+$ chmod +x shootproof-cli.phar
+$ mv shootproof-cli.phar /usr/local/bin/shootproof-cli
 ```
-$ wget https://github.com/ShootProof/shootproof-cli/blob/master/bin/shootproof-cli.phar?raw=true
-$ mv ./shootproof-cli.phar /usr/local/bin/shootproof-cli
-```
+
+Now `shootproof-cli` should be available for you to use from the command line.
+
+Optionally, you may clone this repository and [build the phar file yourself](#building-the-phar-file).
+
 
 ## Usage
 
-```shootproof-cli <command> [options]```
+```
+shootproof-cli <command> [options]
+```
 
 ### Supported Commands
 
@@ -39,6 +46,9 @@ retryLimit=<limit>
 email=<email>
 ```
 
+See `.shootproof-sample` for a minimal example of the configuration file.
+
+
 ## Required Permissions
 
 For this script to operate properly, you must have an access token authorized for the following scopes:
@@ -52,6 +62,26 @@ For this script to operate properly, you must have an access token authorized fo
 * sp.photo.delete
 
 Non-expiring access tokens are available from ShootProof on request.
+
+
+## Building the Phar File
+
+The ShootProof command line tool is distributed as an executable [phar](http://php.net/phar) file. The `build.php` script handles building this file.
+
+To build `shootproof-cli.phar`, first make sure that phar creation is enabled in your php.ini file:
+
+```
+phar.readonly = 0
+```
+
+To build the phar file, change to the location of your `shootproof-cli` project clone and execute the `build.php` script line this:
+
+```
+$ php build.php
+```
+
+This will create a `build/` directory and place the generated `shootproof-cli.phar` file there.
+
 
 ## License
 
