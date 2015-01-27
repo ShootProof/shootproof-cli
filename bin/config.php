@@ -8,9 +8,9 @@ use ShootProof\Cli\Validators\CallbackValidator;
 use ShootProof\Cli\Validators\TimezoneValidator;
 use Monolog\Logger;
 
-$summary = 'Command line client for ShootProof';
+$summary = 'Command line tool for interacting with the ShootProof API';
 
-$usage = '/path/to/shootproof.phar <command> [options]';
+$usage = '<command> [options]';
 
 $description = <<<TEXT
 Supported commands:

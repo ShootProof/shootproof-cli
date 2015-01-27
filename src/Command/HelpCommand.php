@@ -43,7 +43,7 @@ TEXT;
 		}
 
 		$this->stdio->outln(
-			$help->getHelp('shootproof-cli.phar')
+			$help->getHelp('shootproof-cli')
 		);
 	}
 }

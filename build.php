@@ -1,22 +1,31 @@
 #!/usr/bin/env php
 <?php
 
+require __DIR__ . '/src/bootstrap.php';
+
+use ShootProof\Cli\Compiler;
+
+error_reporting(-1);
+ini_set('display_errors', 1);
+
 $name = 'shootproof-cli.phar';
-$path = __DIR__ . '/bin/' . $name;
+$path = __DIR__ . '/build/' . $name;
 
-$phar = new Phar($path, FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::KEY_AS_FILENAME, $name);
-$phar->startBuffering();
+if (!file_exists(dirname($path))) {
+    mkdir(dirname($path));
+}
 
-// Add all PHP files
-$phar->buildFromDirectory(__DIR__, '/\.php$/');
+try {
 
-// Create a custom stub to add the shebang
-$stub = "#!/usr/bin/env php\n"
-      . $phar->createDefaultStub('main.php');
-$phar->setStub($stub);
+    $compiler = new Compiler();
+    $compiler->compile($path);
+    chmod($path, 0755);
 
-// Close the file
-$phar->stopBuffering();
+} catch (\Exception $e) {
 
-// Make the phar executable
-chmod($path, 0755);
+    echo 'Failed to compile phar: [' . get_class($e) . '] '
+        . $e->getMessage() . ' at ' . $e->getFile()
+        . ':' . $e->getLine();
+    exit(1);
+
+}

@@ -1,14 +1,18 @@
+#!/usr/bin/env php
 <?php
 
-namespace ShootProof\Cli;
+if (PHP_SAPI !== 'cli') {
+    echo 'Warning: shootproof-cli should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL;
+}
 
 set_time_limit(0);
 date_default_timezone_set('UTC');
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../src/bootstrap.php';
 
 $config = require __DIR__ . '/config.php';
 
+use ShootProof\Cli\ErrorHandler;
 use ShootProof\Cli\Options;
 use ShootProof\Cli\Utility\OptionTransformer;
 use ShootProof\Cli\Validators\ValidatorException;
@@ -20,7 +24,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\NativeMailerHandler;
 use Monolog\Handler\BufferHandler;
 use Monolog\Formatter\LineFormatter;
-use Sp_Api;
 
 // Set up the dependency injection container; we do it manually here instead of
 // using the ContainerBuilder to prevent calling Container::lock()

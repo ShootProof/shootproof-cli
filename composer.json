@@ -23,7 +23,8 @@
         "aura/di": "~2.0",
         "monolog/monolog": "~1.11",
         "phine/phar": "~1.0",
-        "shootproof/php-sdk": "~1.0"
+        "shootproof/php-sdk": "~1.0",
+        "symfony/finder": "~2.6"
     },
     "autoload": {
         "psr-4": {
@@ -40,5 +41,5 @@
             "dev-master": "1.x-dev"
         }
     },
-    "bin": ["bin/shootproof-cli.phar"]
+    "bin": ["bin/shootproof-cli"]
 }
