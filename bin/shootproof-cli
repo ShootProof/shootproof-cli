@@ -2,7 +2,8 @@
 <?php
 
 if (PHP_SAPI !== 'cli') {
-    echo 'Warning: shootproof-cli should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL;
+    echo 'Warning: shootproof-cli should be invoked via the CLI version of PHP, not the '
+        . PHP_SAPI . ' SAPI' . PHP_EOL;
 }
 
 set_time_limit(0);
@@ -43,17 +44,19 @@ date_default_timezone_set($options->timezone);
 
 // Configure Monolog
 $logger = new Logger($config['monologChannel']);
-$formatter = new LineFormatter($config['monologFormat'], NULL, TRUE, TRUE); // custom line format, allow line breaks, ignore empty context
+
+// custom line format, allow line breaks, ignore empty context
+$formatter = new LineFormatter($config['monologFormat'], null, true, true);
+
 $handler = new StreamHandler("php://stdout", $config['monologVerbosity'][$options->verbosity]);
 $handler->setFormatter($formatter);
 $logger->pushHandler($handler); // log to screen
 
 // Send an email report when the script ends
-if ($options->email)
-{
-	$handler = new NativeMailerHandler($options->email, $options->emailSubject, $options->emailFrom, Logger::NOTICE);
-	$handler->setFormatter($formatter);
-	$logger->pushHandler(new BufferHandler($handler));
+if ($options->email) {
+    $handler = new NativeMailerHandler($options->email, $options->emailSubject, $options->emailFrom, Logger::NOTICE);
+    $handler->setFormatter($formatter);
+    $logger->pushHandler(new BufferHandler($handler));
 }
 
 // Use Monolog as the error handler
@@ -61,21 +64,17 @@ ErrorHandler::register($logger);
 
 // Misc. debug messages
 $logger->addDebug('Timezone set', [$options->timezone]);
-if ($optionsFactory->getLastError())
-{
-	$logger->addDebug('Config file not found', [$options->config]);
+if ($optionsFactory->getLastError()) {
+    $logger->addDebug('Config file not found', [$options->config]);
+} else {
+    $logger->addDebug('Config file found', [$options->config]);
 }
-else
-{
-	$logger->addDebug('Config file found', [$options->config]);
-}
-if ($options->email)
-{
-	$logger->addDebug('Will send email report', [
-		'to' => $options->email,
-		'from' => $options->emailFrom,
-		'subject' => $options->emailSubject,
-	]);
+if ($options->email) {
+    $logger->addDebug('Will send email report', [
+        'to' => $options->email,
+        'from' => $options->emailFrom,
+        'subject' => $options->emailSubject,
+    ]);
 }
 
 // Configure the ShootProof API client
@@ -96,54 +95,43 @@ $help->setOptions($config['options']);
 
 // Dispatch command
 $commandName = $getopt->get(1);
-if ($commandName === 'help')
-{
-	$helpCommand = $di->get($commandName);
+if ($commandName === 'help') {
+    $helpCommand = $di->get($commandName);
 
-	// handle help subcommands
-	$subCommandName = $getopt->get(2);
-	if ($subCommandName)
-	{
-		if ($di->has($subCommandName))
-		{
-			// Show subcommand help
-			$subCommand = $di->get($subCommandName);
-			$helpCommand($help, $subCommand);
-			exit(Status::SUCCESS);
-		}
-		else
-		{
-			// Invalid subcommand; show help command help
-			$helpCommand($help, $helpCommand);
-			exit(Status::USAGE);
-		}
-	}
-	else
-	{
-		// No subcommand
-		$helpCommand($help, $helpCommand);
-		exit(Status::SUCCESS);
-	}
-}
-elseif ($di->has($commandName))
-{
-	$logger->addNotice('Executing command', [$commandName]);
+    // handle help subcommands
+    $subCommandName = $getopt->get(2);
+    if ($subCommandName) {
+        if ($di->has($subCommandName)) {
+            // Show subcommand help
+            $subCommand = $di->get($subCommandName);
+            $helpCommand($help, $subCommand);
+            exit(Status::SUCCESS);
+        } else {
+            // Invalid subcommand; show help command help
+            $helpCommand($help, $helpCommand);
+            exit(Status::USAGE);
+        }
+    } else {
+        // No subcommand
+        $helpCommand($help, $helpCommand);
+        exit(Status::SUCCESS);
+    }
+} elseif ($di->has($commandName)) {
+    $logger->addNotice('Executing command', [$commandName]);
 
-	// Each command has its own set of options, but will need the general options too, so
-	// we inject the base config which will be extended with the command's own config
-	$optionsFactory->setBaseConfig(
-		array_keys($config['options']),
-		$config['validators'],
-		$config['defaults']
-	);
+    // Each command has its own set of options, but will need the general options too, so
+    // we inject the base config which will be extended with the command's own config
+    $optionsFactory->setBaseConfig(
+        array_keys($config['options']),
+        $config['validators'],
+        $config['defaults']
+    );
 
-	$command = $di->get($commandName);
-	$command($context, $optionsFactory);
-	exit(Status::SUCCESS);
-}
-else
-{
-	// No command, show main help
-	$di->get('help')->__invoke($help);
-	exit(Status::NOINPUT);
+    $command = $di->get($commandName);
+    $command($context, $optionsFactory);
+    exit(Status::SUCCESS);
+} else {
+    // No command, show main help
+    $di->get('help')->__invoke($help);
+    exit(Status::NOINPUT);
 }

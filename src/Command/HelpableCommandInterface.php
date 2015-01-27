@@ -6,5 +6,5 @@ use Aura\Cli\Help;
 
 interface HelpableCommandInterface
 {
-	static public function configureHelp(Help $help);
+    public static function configureHelp(Help $help);
 }

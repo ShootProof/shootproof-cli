@@ -11,20 +11,23 @@ class ErrorHandler extends MonologErrorHandler
 {
     public function handleException(\Exception $e)
     {
-        if ($e instanceof ValidatorException)
-        {
+        if ($e instanceof ValidatorException) {
             $this->logger->log(
                 $this->uncaughtExceptionLevel === null ? LogLevel::ERROR : $this->uncaughtExceptionLevel,
                 $e->getMessage(),
-                array()
+                []
             );
-        }
-        else
-        {
+        } else {
             $this->logger->log(
                 $this->uncaughtExceptionLevel === null ? LogLevel::ERROR : $this->uncaughtExceptionLevel,
-                sprintf('Uncaught Exception %s: "%s" at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()),
-                array('exception' => $e)
+                sprintf(
+                    'Uncaught Exception %s: "%s" at %s line %s',
+                    get_class($e),
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                ),
+                ['exception' => $e]
             );
 
             if ($this->previousExceptionHandler) {
@@ -40,26 +43,35 @@ class ErrorHandler extends MonologErrorHandler
         $this->logger = $logger;
     }
 
-    public function registerErrorHandler(array $levelMap = array(), $callPrevious = true, $errorTypes = -1)
+    public function registerErrorHandler(array $levelMap = [], $callPrevious = true, $errorTypes = -1)
     {
-        $prev = set_error_handler(array($this, 'handleError'), $errorTypes);
+        $prev = set_error_handler([$this, 'handleError'], $errorTypes);
         $this->errorLevelMap = array_replace($this->defaultErrorLevelMap(), $levelMap);
         if ($callPrevious) {
             $this->previousErrorHandler = $prev ?: true;
         }
     }
-    
+
     /**
      * @private
      */
-    public function handleError($code, $message, $file = '', $line = 0, $context = array())
+    public function handleError($code, $message, $file = '', $line = 0, $context = [])
     {
         if (!(error_reporting() & $code)) {
             return;
         }
 
         $level = isset($this->errorLevelMap[$code]) ? $this->errorLevelMap[$code] : LogLevel::CRITICAL;
-        $this->logger->log($level, self::codeToString($code).': '.$message, array('code' => $code, 'message' => $message, 'file' => $file, 'line' => $line));
+        $this->logger->log(
+            $level,
+            self::codeToString($code) . ': ' . $message,
+            [
+                'code' => $code,
+                'message' => $message,
+                'file' => $file,
+                'line' => $line
+            ]
+        );
 
         if ($this->previousErrorHandler === true) {
             return false;
@@ -80,7 +92,12 @@ class ErrorHandler extends MonologErrorHandler
             $this->logger->log(
                 $this->fatalLevel === null ? LogLevel::ALERT : $this->fatalLevel,
                 'Fatal Error ('.self::codeToString($lastError['type']).'): '.$lastError['message'],
-                array('code' => $lastError['type'], 'message' => $lastError['message'], 'file' => $lastError['file'], 'line' => $lastError['line'])
+                [
+                    'code' => $lastError['type'],
+                    'message' => $lastError['message'],
+                    'file' => $lastError['file'],
+                    'line' => $lastError['line']
+                ]
             );
         }
     }
@@ -92,27 +109,27 @@ class ErrorHandler extends MonologErrorHandler
     protected $errorLevelMap;
     protected $fatalLevel;
     protected $reservedMemory;
-    protected static $fatalErrors = array(E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR);
+    protected static $fatalErrors = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR];
 
     protected function defaultErrorLevelMap()
     {
-        return array(
-            E_ERROR             => LogLevel::CRITICAL,
-            E_WARNING           => LogLevel::WARNING,
-            E_PARSE             => LogLevel::ALERT,
-            E_NOTICE            => LogLevel::NOTICE,
-            E_CORE_ERROR        => LogLevel::CRITICAL,
-            E_CORE_WARNING      => LogLevel::WARNING,
-            E_COMPILE_ERROR     => LogLevel::ALERT,
-            E_COMPILE_WARNING   => LogLevel::WARNING,
-            E_USER_ERROR        => LogLevel::ERROR,
-            E_USER_WARNING      => LogLevel::WARNING,
-            E_USER_NOTICE       => LogLevel::NOTICE,
-            E_STRICT            => LogLevel::NOTICE,
+        return [
+            E_ERROR => LogLevel::CRITICAL,
+            E_WARNING => LogLevel::WARNING,
+            E_PARSE => LogLevel::ALERT,
+            E_NOTICE => LogLevel::NOTICE,
+            E_CORE_ERROR => LogLevel::CRITICAL,
+            E_CORE_WARNING => LogLevel::WARNING,
+            E_COMPILE_ERROR => LogLevel::ALERT,
+            E_COMPILE_WARNING => LogLevel::WARNING,
+            E_USER_ERROR => LogLevel::ERROR,
+            E_USER_WARNING => LogLevel::WARNING,
+            E_USER_NOTICE => LogLevel::NOTICE,
+            E_STRICT => LogLevel::NOTICE,
             E_RECOVERABLE_ERROR => LogLevel::ERROR,
-            E_DEPRECATED        => LogLevel::NOTICE,
-            E_USER_DEPRECATED   => LogLevel::NOTICE,
-        );
+            E_DEPRECATED => LogLevel::NOTICE,
+            E_USER_DEPRECATED => LogLevel::NOTICE,
+        ];
     }
 
     protected static function codeToString($code)

@@ -7,9 +7,9 @@ use Aura\Cli\Stdio;
 
 class HelpCommand implements HelpableCommandInterface
 {
-	public static $usage = 'help [command]';
+    public static $usage = 'help [command]';
 
-	public static $description = <<<TEXT
+    public static $description = <<<TEXT
 Displays this help screen, or help for a specific command.
 
     Supported commands:
@@ -20,30 +20,29 @@ Displays this help screen, or help for a specific command.
         accesslevel
 TEXT;
 
-	protected $stdio;
+    protected $stdio;
 
-	static public function configureHelp(Help $help)
-	{
-		$help->setUsage(self::$usage);
-		$help->setDescr(self::$description);
-		$help->setOptions([]);
-		return $help;
-	}
+    public static function configureHelp(Help $help)
+    {
+        $help->setUsage(self::$usage);
+        $help->setDescr(self::$description);
+        $help->setOptions([]);
+        return $help;
+    }
 
-	public function __construct(Stdio $stdio)
-	{
-		$this->stdio = $stdio;
-	}
+    public function __construct(Stdio $stdio)
+    {
+        $this->stdio = $stdio;
+    }
 
-	public function __invoke(Help $help, $subCommand = NULL)
-	{
-		if ($subCommand instanceof HelpableCommandInterface)
-		{
-			$subCommand->configureHelp($help);
-		}
+    public function __invoke(Help $help, $subCommand = null)
+    {
+        if ($subCommand instanceof HelpableCommandInterface) {
+            $subCommand->configureHelp($help);
+        }
 
-		$this->stdio->outln(
-			$help->getHelp('shootproof-cli')
-		);
-	}
+        $this->stdio->outln(
+            $help->getHelp('shootproof-cli')
+        );
+    }
 }

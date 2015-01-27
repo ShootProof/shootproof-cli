@@ -4,27 +4,23 @@ namespace ShootProof\Cli\Validators;
 
 class RequiredValidator implements ValidatorInterface
 {
-	protected $strict;
+    protected $strict;
 
-	public function __construct($strict = FALSE)
-	{
-		$this->strict = $strict;
-	}
+    public function __construct($strict = false)
+    {
+        $this->strict = $strict;
+    }
 
-	public function __invoke($value, $setting = NULL, array $settings = [])
-	{
-		if ( ! isset($settings[$setting]))
-		{
-			return FALSE;
-		}
+    public function __invoke($value, $setting = null, array $settings = [])
+    {
+        if (! isset($settings[$setting])) {
+            return false;
+        }
 
-		if ( ! $this->strict)
-		{
-			return (boolean) $value;
-		}
-		else
-		{
-			return TRUE;
-		}
-	}
+        if (! $this->strict) {
+            return (boolean) $value;
+        } else {
+            return true;
+        }
+    }
 }

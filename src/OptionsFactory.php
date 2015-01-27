@@ -10,66 +10,60 @@ use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 class OptionsFactory
 {
-	protected $config = [];
-	protected $context;
-	protected $loader;
-	protected $error;
+    protected $config = [];
+    protected $context;
+    protected $loader;
+    protected $error;
 
-	public function __construct(Context $context)
-	{
-		$this->context = $context;
-	}
+    public function __construct(Context $context)
+    {
+        $this->context = $context;
+    }
 
-	public function setBaseConfig(array $getopt = [], array $validators = [], array $defaults = [])
-	{
-		$this->config = compact('getopt', 'validators', 'defaults');
-	}
+    public function setBaseConfig(array $getopt = [], array $validators = [], array $defaults = [])
+    {
+        $this->config = compact('getopt', 'validators', 'defaults');
+    }
 
-	public function newInstance(array $getopt = [], array $validators = [], array $defaults = [])
-	{
-		$this->error = NULL;
-		
-		// Extend the base config
-		if (isset($this->config['getopt']))
-		{
-			$getopt = array_merge($this->config['getopt'], $getopt);
-		}
+    public function newInstance(array $getopt = [], array $validators = [], array $defaults = [])
+    {
+        $this->error = null;
 
-		if (isset($this->config['validators']))
-		{
-			$validators = array_merge($this->config['validators'], $validators);
-		}
+        // Extend the base config
+        if (isset($this->config['getopt'])) {
+            $getopt = array_merge($this->config['getopt'], $getopt);
+        }
 
-		if (isset($this->config['defaults']))
-		{
-			$defaults = array_merge($this->config['defaults'], $defaults);
-		}
+        if (isset($this->config['validators'])) {
+            $validators = array_merge($this->config['validators'], $validators);
+        }
 
-		// Read command line
-		$cli = $this->context->getopt($getopt);
-		$data = new OptionTransformer($cli->get());
+        if (isset($this->config['defaults'])) {
+            $defaults = array_merge($this->config['defaults'], $defaults);
+        }
 
-		// Create the options container instance
-		$options = new Options($validators, $defaults);
-		$options->loadOptionData($data->getArrayCopy()); // initial load so we can access the config option
+        // Read command line
+        $cli = $this->context->getopt($getopt);
+        $data = new OptionTransformer($cli->get());
 
-		// Read config file
-		$configLoader = new DotenvLoader(new TildeExpander($options->config));
-		try
-		{
-			$configData = $configLoader->parse()->toArray();
-			$options->loadOptionData($configData, FALSE); // don't overwrite CLI data
-		}
-		catch (\InvalidArgumentException $e)
-		{
-			$this->error = $e;
-		}
+        // Create the options container instance
+        $options = new Options($validators, $defaults);
+        $options->loadOptionData($data->getArrayCopy()); // initial load so we can access the config option
 
-		return $options;
-	}
+        // Read config file
+        $configLoader = new DotenvLoader(new TildeExpander($options->config));
+        try {
+            $configData = $configLoader->parse()->toArray();
+            $options->loadOptionData($configData, false); // don't overwrite CLI data
+        } catch (\InvalidArgumentException $e) {
+            $this->error = $e;
+        }
 
-	public function getLastError()
-	{
-		return $this->error;
-	}
+        return $options;
+    }
+
+    public function getLastError()
+    {
+        return $this->error;
+    }
 }
