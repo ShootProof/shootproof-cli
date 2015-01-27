@@ -1,29 +1,43 @@
 {
     "name": "shootproof/shootproof-cli",
-    "description": "Command line client for ShootProof (http://shootproof.com)",
-    "keywords": ["shootproof", "cli", "client"],
+    "homepage": "http://developer.shootproof.com",
+    "description": "A command line client for interacting with the ShootProof API",
+    "keywords": ["shootproof", "api", "cli", "client", "photography", "photo"],
+    "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "Jonathon Hill",
-            "email": "jhill9693@gmail.com"
+            "name": "ShootProof",
+            "homepage": "http://developer.shootproof.com"
         }
     ],
+    "support": {
+        "email": "support@shootproof.com",
+        "issues": "https://github.com/ShootProof/shootproof-cli/issues",
+        "source": "https://github.com/ShootProof/shootproof-cli"
+    },
     "require": {
         "php": ">=5.4",
         "josegonzalez/dotenv": "~0.2",
         "aura/cli": "~2.0",
         "aura/di": "~2.0",
         "monolog/monolog": "~1.11",
-        "phine/phar": "~1.0"
-    },
-    "require-dev": {
-        "shootproof/php-sdk": "dev-master"
+        "phine/phar": "~1.0",
+        "shootproof/php-sdk": "~1.0"
     },
     "autoload": {
         "psr-4": {
-            "compwright\\ShootproofCli\\Test\\": ["tests/src/"],
             "compwright\\ShootproofCli\\": ["src/"]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "compwright\\ShootproofCli\\Test\\": ["tests/src/"]
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
         }
     },
     "bin": ["bin/shootproof-cli.phar"]
