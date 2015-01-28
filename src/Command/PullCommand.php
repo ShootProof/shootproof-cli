@@ -26,12 +26,21 @@ use ShootProof\Cli\Validators\ShootproofEventValidator;
 use ShootProof\Cli\Validators\ValidatorException;
 use Sp_Api as ShootproofApi;
 
+/**
+ * Provides the shootproof-cli pull command
+ */
 class PullCommand extends BaseCommand implements HelpableCommandInterface
 {
     use HelpableCommandTrait;
 
+    /**
+     * @var string
+     */
     public static $usage = 'pull [options] [<dir>]';
 
+    /**
+     * @var string
+     */
     public static $description = <<<TEXT
 This command will compare the ShootProof photos in the specified
     event and compare those to the ones in the directory. New photos
@@ -50,6 +59,9 @@ This command will compare the ShootProof photos in the specified
     provided on the command line.
 TEXT;
 
+    /**
+     * @var array
+     */
     public static $options = [
         'event:' => 'ShootProof event ID',
         'album:' => 'ShootProof album ID',
@@ -57,6 +69,11 @@ TEXT;
         'preview' => 'Preview this operation, but do not apply any changes',
     ];
 
+    /**
+     * Returns an array of validators for validating options passed to this command
+     *
+     * @return array
+     */
     protected function getValidators()
     {
         return [
@@ -65,6 +82,11 @@ TEXT;
         ];
     }
 
+    /**
+     * Returns the default target option (album or event) for this command
+     *
+     * @return array
+     */
     protected function getDefaults()
     {
         return [
@@ -76,6 +98,14 @@ TEXT;
         ];
     }
 
+    /**
+     * Pulls (downloads) files from ShootProof to the specified local directory
+     *
+     * @param string $dir The directory to process
+     * @param Options $baseOptions
+     * @param OptionsFactory $optionsFactory
+     * @throws ValidatorException if event or album options are not provided
+     */
     protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
     {
         // If the directory doesn't exist, create it and any parent dirs
@@ -186,6 +216,14 @@ TEXT;
         }
     }
 
+    /**
+     * Downloads an individual file and stores it to local disk
+     *
+     * @param string $url URL of the file to download
+     * @param string $destination Path to the location on disk where file should be saved
+     * @param Options $options
+     * @throws \RuntimeException if download failed and haltOnError is true
+     */
     protected function downloadFile($url, $destination, Options $options)
     {
         $downloader = new FileDownloader($url);
