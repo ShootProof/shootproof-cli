@@ -177,7 +177,7 @@ TEXT;
         }
     }
 
-    protected function downloadFile($url, $destination, $options)
+    protected function downloadFile($url, $destination, Options $options)
     {
         $downloader = new FileDownloader($url);
 
