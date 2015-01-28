@@ -2,20 +2,20 @@
 
 namespace ShootProof\Cli\Command;
 
+use Aura\Cli\Context;
+use josegonzalez\Dotenv\Loader as DotenvLoader;
 use ShootProof\Cli\Options;
 use ShootProof\Cli\OptionsFactory;
-use ShootProof\Cli\Validators\ShootproofEventValidator;
-use ShootProof\Cli\Validators\ShootproofAlbumValidator;
-use ShootProof\Cli\Validators\ValidatorException;
-use ShootProof\Cli\Utility\FileSetCalculator;
-use ShootProof\Cli\Utility\TildeExpander;
-use ShootProof\Cli\Utility\ShootproofFile;
-use ShootProof\Cli\Utility\ResultPager;
-use ShootProof\Cli\Utility\FileDownloader;
 use ShootProof\Cli\Utility\ConfigWriter;
-use Aura\Cli\Context;
+use ShootProof\Cli\Utility\FileDownloader;
+use ShootProof\Cli\Utility\FileSetCalculator;
+use ShootProof\Cli\Utility\ResultPager;
+use ShootProof\Cli\Utility\ShootproofFile;
+use ShootProof\Cli\Utility\TildeExpander;
+use ShootProof\Cli\Validators\ShootproofAlbumValidator;
+use ShootProof\Cli\Validators\ShootproofEventValidator;
+use ShootProof\Cli\Validators\ValidatorException;
 use Sp_Api as ShootproofApi;
-use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 class PullCommand extends BaseCommand implements HelpableCommandInterface
 {

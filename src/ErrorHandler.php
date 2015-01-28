@@ -2,9 +2,9 @@
 
 namespace ShootProof\Cli;
 
+use Monolog\ErrorHandler as MonologErrorHandler;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Monolog\ErrorHandler as MonologErrorHandler;
 use ShootProof\Cli\Validators\ValidatorException;
 
 class ErrorHandler extends MonologErrorHandler

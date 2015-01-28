@@ -2,13 +2,13 @@
 
 namespace ShootProof\Cli\Command;
 
+use Aura\Cli\Context;
+use Aura\Cli\Stdio;
+use Monolog\Logger;
 use ShootProof\Cli\Options;
 use ShootProof\Cli\OptionsFactory;
 use ShootProof\Cli\Utility\DirectoryListFactory;
 use ShootProof\Cli\Utility\StdinReader;
-use Aura\Cli\Stdio;
-use Aura\Cli\Context;
-use Monolog\Logger;
 use Sp_Api as ShootproofApi;
 
 abstract class BaseCommand

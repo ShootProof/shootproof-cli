@@ -13,18 +13,18 @@ require_once __DIR__ . '/../src/bootstrap.php';
 
 $config = require __DIR__ . '/config.php';
 
+use Aura\Cli\Status;
+use Aura\Di\Container;
+use Aura\Di\Factory as ContainerFactory;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\BufferHandler;
+use Monolog\Handler\NativeMailerHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use ShootProof\Cli\ErrorHandler;
 use ShootProof\Cli\Options;
 use ShootProof\Cli\Utility\OptionTransformer;
 use ShootProof\Cli\Validators\ValidatorException;
-use Aura\Di\Container;
-use Aura\Di\Factory as ContainerFactory;
-use Aura\Cli\Status;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\NativeMailerHandler;
-use Monolog\Handler\BufferHandler;
-use Monolog\Formatter\LineFormatter;
 
 // Set up the dependency injection container; we do it manually here instead of
 // using the ContainerBuilder to prevent calling Container::lock()

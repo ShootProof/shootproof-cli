@@ -2,11 +2,11 @@
 
 namespace ShootProof\Cli;
 
+use Aura\Cli\Context;
+use josegonzalez\Dotenv\Loader as DotenvLoader;
 use ShootProof\Cli\Options;
 use ShootProof\Cli\Utility\OptionTransformer;
 use ShootProof\Cli\Utility\TildeExpander;
-use Aura\Cli\Context;
-use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 class OptionsFactory
 {

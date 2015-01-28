@@ -2,10 +2,10 @@
 
 namespace ShootProof\Cli;
 
+use ShootProof\Cli\Utility\OptionTransformer;
+use ShootProof\Cli\Validators\RequiredValidator;
 use ShootProof\Cli\Validators\ValidatorException;
 use ShootProof\Cli\Validators\ValidatorInterface;
-use ShootProof\Cli\Validators\RequiredValidator;
-use ShootProof\Cli\Utility\OptionTransformer;
 
 class Options
 {

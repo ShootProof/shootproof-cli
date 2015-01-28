@@ -2,16 +2,16 @@
 
 namespace ShootProof\Cli\Command;
 
+use Aura\Cli\Context;
+use josegonzalez\Dotenv\Loader as DotenvLoader;
 use ShootProof\Cli\Options;
 use ShootProof\Cli\OptionsFactory;
+use ShootProof\Cli\Utility\TildeExpander;
+use ShootProof\Cli\Validators\CallbackValidator;
+use ShootProof\Cli\Validators\RequiredValidator;
 use ShootProof\Cli\Validators\ShootproofEventValidator;
 use ShootProof\Cli\Validators\ValuesValidator;
-use ShootProof\Cli\Validators\RequiredValidator;
-use ShootProof\Cli\Validators\CallbackValidator;
-use ShootProof\Cli\Utility\TildeExpander;
-use Aura\Cli\Context;
 use Sp_Api as ShootproofApi;
-use josegonzalez\Dotenv\Loader as DotenvLoader;
 
 class AccesslevelCommand extends BaseCommand implements HelpableCommandInterface
 {

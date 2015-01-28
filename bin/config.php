@@ -1,12 +1,12 @@
 <?php
 
-use ShootProof\Cli\Validators\RequiredValidator;
-use ShootProof\Cli\Validators\RangeValidator;
-use ShootProof\Cli\Validators\FileValidator;
-use ShootProof\Cli\Validators\EmailValidator;
-use ShootProof\Cli\Validators\CallbackValidator;
-use ShootProof\Cli\Validators\TimezoneValidator;
 use Monolog\Logger;
+use ShootProof\Cli\Validators\CallbackValidator;
+use ShootProof\Cli\Validators\EmailValidator;
+use ShootProof\Cli\Validators\FileValidator;
+use ShootProof\Cli\Validators\RangeValidator;
+use ShootProof\Cli\Validators\RequiredValidator;
+use ShootProof\Cli\Validators\TimezoneValidator;
 
 $summary = 'Command line tool for interacting with the ShootProof API';
 
