@@ -22,12 +22,21 @@ use ShootProof\Cli\Validators\ShootproofEventValidator;
 use ShootProof\Cli\Validators\ValuesValidator;
 use Sp_Api as ShootproofApi;
 
+/**
+ * Provides the shootproof-cli accesslevel command
+ */
 class AccesslevelCommand extends BaseCommand implements HelpableCommandInterface
 {
     use HelpableCommandTrait;
 
+    /**
+     * @var string
+     */
     public static $usage = 'accesslevel --access-level=<value> [options] [<dir>]';
 
+    /**
+     * @var string
+     */
     public static $description = <<<TEXT
 Changes the access level and password for a ShootProof event.
     --access-level must be set to one of the following access levels:
@@ -41,12 +50,20 @@ Changes the access level and password for a ShootProof event.
     the directory, --event will be read from that file.
 TEXT;
 
+    /**
+     * @var array
+     */
     public static $options = [
         'event:' => 'ShootProof event ID',
         'access-level:' => 'ShootProof access level',
         'password:' => 'ShootProof password (required for certain access levels)',
     ];
 
+    /**
+     * Returns an array of validators for validating options passed to this command
+     *
+     * @return array
+     */
     protected function getValidators()
     {
         return [
@@ -84,6 +101,16 @@ TEXT;
         ];
     }
 
+    /**
+     * Changes the access level for a ShootProof gallery (event)
+     *
+     * If no event option is specified and a .shootproof file exists in the
+     * directory, then event will be read from that file.
+     *
+     * @param string $dir The directory to process
+     * @param Options $baseOptions
+     * @param OptionsFactory $optionsFactory
+     */
     protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
     {
         // Reload the options and read the directory config file
@@ -100,7 +127,6 @@ TEXT;
         }
 
         // Make sure all required options are present
-        //var_dump($options->asArray());
         $options->validateAllRequired();
         $options->validate('password', $options->password);
 
