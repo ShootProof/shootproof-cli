@@ -8,7 +8,7 @@ class DirectoryListFactory
     const SOURCE_STDIN = 'stdin';
     const SOURCE_DEFAULT = 'cwd';
 
-    public $source = self::SOURCE_DEFAULT;
+    protected $source = self::SOURCE_DEFAULT;
     protected $dirList;
 
     public function getList()
