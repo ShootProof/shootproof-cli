@@ -27,6 +27,7 @@ TEXT;
         $help->setUsage(self::$usage);
         $help->setDescr(self::$description);
         $help->setOptions([]);
+
         return $help;
     }
 
@@ -35,9 +36,9 @@ TEXT;
         $this->stdio = $stdio;
     }
 
-    public function __invoke(Help $help, $subCommand = null)
+    public function __invoke(Help $help, HelpableCommandInterface $subCommand = null)
     {
-        if ($subCommand instanceof HelpableCommandInterface) {
+        if ($subCommand !== null) {
             $subCommand->configureHelp($help);
         }
 
