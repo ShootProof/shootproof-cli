@@ -13,7 +13,16 @@ namespace ShootProof\Cli\Command;
 
 use Aura\Cli\Help;
 
+/**
+ * Enforces an interface for shootproof-cli commands that need help messages
+ */
 interface HelpableCommandInterface
 {
+    /**
+     * Sets up CLI help messages to display when using the "help" command
+     *
+     * @param Help $help The CLI help object used to configure help messages
+     * @return Help
+     */
     public static function configureHelp(Help $help);
 }

@@ -13,8 +13,17 @@ namespace ShootProof\Cli\Command;
 
 use Aura\Cli\Help;
 
+/**
+ * Applies common help command functionality to all classes using this trait
+ */
 trait HelpableCommandTrait
 {
+    /**
+     * Sets up CLI help messages to display when using the "help" command
+     *
+     * @param Help $help The CLI help object used to configure help messages
+     * @return Help
+     */
     static public function configureHelp(Help $help)
     {
         if (isset(self::$usage)) {
