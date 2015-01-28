@@ -25,12 +25,21 @@ use ShootProof\Cli\Validators\ShootproofEventValidator;
 use ShootProof\Cli\Validators\ValuesValidator;
 use Sp_Api as ShootproofApi;
 
+/**
+ * Provides the shootproof-cli push command
+ */
 class PushCommand extends BaseCommand implements HelpableCommandInterface
 {
     use HelpableCommandTrait;
 
+    /**
+     * @var string
+     */
     public static $usage = 'push [options] [<dir>]';
 
+    /**
+     * @var string
+     */
     public static $description = <<<TEXT
 Uploads photos in a directory or set of directories to a ShootProof
     event or album. Choose between the two using the --target-event
@@ -72,6 +81,9 @@ Uploads photos in a directory or set of directories to a ShootProof
     written to the directory for use in subsequent runs.
 TEXT;
 
+    /**
+     * @var array
+     */
     public static $options = [
         'target:' => 'ShootProof upload target (specify event or album)',
         'event:' => 'ShootProof event ID',
@@ -84,6 +96,11 @@ TEXT;
         'preview' => 'Preview this operation, but do not apply any changes',
     ];
 
+    /**
+     * Returns an array of validators for validating options passed to this command
+     *
+     * @return array
+     */
     protected function getValidators()
     {
         return [
@@ -94,6 +111,11 @@ TEXT;
         ];
     }
 
+    /**
+     * Returns the default target option (album or event) for this command
+     *
+     * @return array
+     */
     protected function getDefaults()
     {
         return [
@@ -105,6 +127,13 @@ TEXT;
         ];
     }
 
+    /**
+     * Pushes (uploads) files to ShootProof from the specified local directory
+     *
+     * @param string $dir The directory to process
+     * @param Options $baseOptions
+     * @param OptionsFactory $optionsFactory
+     */
     protected function processDirectory($dir, Options $baseOptions, OptionsFactory $optionsFactory)
     {
         // Reload the options and read the directory config file
@@ -223,6 +252,15 @@ TEXT;
         }
     }
 
+    /**
+     * Uploads a file from disk to a ShootProof event
+     *
+     * @param string $filepath The path to the local file to upload
+     * @param int $eventId The ShootProof ID of the event to which this file should belong
+     * @param int|null $albumId Optionally, the ShootProof ID of the album to which this file should belong
+     * @param int|null $retryLimit Optionally, the number of times we should attempt to upload (defaults to 1)
+     * @throws \RuntimeException if upload fails and haltOnError is true
+     */
     protected function uploadFile($filepath, $eventId, $albumId = null, $retryLimit = null)
     {
         $retryLimit = $retryLimit ? $retryLimit : 1;
@@ -243,6 +281,14 @@ TEXT;
         $this->logger->addError('Upload failed on final attempt', [$result['stat']]);
     }
 
+    /**
+     * Updates a ShootProof photo with one from local disk
+     *
+     * @param string $filepath The path to the local file to upload
+     * @param int $photoId The ShootProof ID of the photo this file should update
+     * @param int|null $retryLimit Optionally, the number of times we should attempt to update (defaults to 1)
+     * @throws \RuntimeException if update fails and haltOnError is true
+     */
     protected function updateFile($filepath, $photoId, $retryLimit = null)
     {
         $retryLimit = $retryLimit ? $retryLimit : 1;
@@ -263,6 +309,13 @@ TEXT;
         $this->logger->addError('Upload failed on final attempt', [$result['stat']]);
     }
 
+    /**
+     * Deletes a ShootProof photo
+     *
+     * @param int $photoId The ShootProof ID of the photo to delete
+     * @param int|null $retryLimit Optionally, the number of times we should attempt to delete (defaults to 1)
+     * @throws \RuntimeException if delete fails and haltOnError is true
+     */
     protected function deleteFile($photoId, $retryLimit = null)
     {
         $retryLimit = $retryLimit ? $retryLimit : 1;
@@ -283,6 +336,13 @@ TEXT;
         $this->logger->addError('Upload failed on final attempt', [$result['stat']]);
     }
 
+    /**
+     * Creates a new ShootProof gallery (event)
+     *
+     * @param Options $options
+     * @param string $defaultName Name to use when creating the event if eventName option not set
+     * @return int|string ShootProof ID of the event created
+     */
     protected function createEvent(Options $options, $defaultName)
     {
         $eventName = $options->eventName ? $options->eventName : $defaultName;
@@ -295,6 +355,13 @@ TEXT;
         }
     }
 
+    /**
+     * Creates a new ShootProof gallery album
+     *
+     * @param Options $options
+     * @param string $defaultName Name to use when creating the album if albumName option not set
+     * @return array Ordered array containing the ShootProof event ID and album ID
+     */
     protected function createAlbum(Options $options, $defaultName)
     {
         $albumName = $options->albumName ? $options->albumName : $defaultName;
