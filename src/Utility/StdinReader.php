@@ -11,21 +11,42 @@
 
 namespace ShootProof\Cli\Utility;
 
+/**
+ * Utility to read standard input from the command line
+ */
 class StdinReader
 {
+    /**
+     * Seconds to wait before timeout
+     * @var int
+     */
     protected $wait = 3;
 
+    /**
+     * Constructs a standard input reader
+     *
+     * @param int $wait Seconds to wait before timeout (defaults to 3)
+     */
     public function __construct($wait = 3)
     {
         $this->wait = 3;
     }
 
-    // Based on http://www.gregfreeman.org/2013/processing-data-with-php-using-stdin-and-piping/
+    /**
+     * Read everything from standard input
+     *
+     * @param callable $lineCallback An operation to perform on each line read
+     * @param callable $doneCallback An operation to perform when the end has been reached
+     * @throws \RuntimeException if a timeout occurs
+     * @link http://www.gregfreeman.org/2013/processing-data-with-php-using-stdin-and-piping/
+     *       Based on "Processing data with PHP using STDIN and Piping" by Greg Freeman
+     */
     public function read(callable $lineCallback, callable $doneCallback = null)
     {
         stream_set_blocking(STDIN, 0);
         $timeoutStarted = false;
         $timeout = null;
+
         while (1) {
         // I'm getting something...
             while (false !== ($line = fgets(STDIN))) {
