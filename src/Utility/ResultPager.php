@@ -11,8 +11,16 @@
 
 namespace ShootProof\Cli\Utility;
 
+/**
+ * Utility to build a full list of results from pages of results
+ */
 class ResultPager extends \ArrayObject
 {
+    /**
+     * Constructs a result pager object
+     *
+     * @param callable $fetch A callback returning an ordered array of [total pages, current page results]
+     */
     public function __construct(callable $fetch)
     {
         $resultset = [];
