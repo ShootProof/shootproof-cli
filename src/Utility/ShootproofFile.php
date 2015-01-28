@@ -8,17 +8,6 @@ class ShootproofFile
     public $name = '';
     public $url = [];
 
-    public function arrayFactory(array $data)
-    {
-        extract($data);
-        return new self($name, $id, $url);
-    }
-
-    public function stringFactory($name)
-    {
-        return new self($name);
-    }
-
     public function __construct($name = '', $id = '', $url = [])
     {
         $this->name = $name;
@@ -29,5 +18,16 @@ class ShootproofFile
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    public function arrayFactory(array $data)
+    {
+        extract($data);
+        return new self($name, $id, $url);
+    }
+
+    public function stringFactory($name)
+    {
+        return new self($name);
     }
 }
