@@ -4,12 +4,12 @@ namespace ShootProof\Cli\Utility;
 
 class DirectoryListFactory
 {
-    public $source = self::SOURCE_DEFAULT;
-    protected $dirList;
-
     const SOURCE_COMMAND_LINE = 'command_line';
     const SOURCE_STDIN = 'stdin';
     const SOURCE_DEFAULT = 'cwd';
+
+    public $source = self::SOURCE_DEFAULT;
+    protected $dirList;
 
     public function getList()
     {
