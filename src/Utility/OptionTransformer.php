@@ -11,8 +11,16 @@
 
 namespace ShootProof\Cli\Utility;
 
+/**
+ * Utility to transform option key names
+ */
 class OptionTransformer extends \ArrayObject
 {
+    /**
+     * Constructs an option transformer object
+     *
+     * @param array $input An array of options to store on this object
+     */
     public function __construct(array $input = [])
     {
         $transformed = [];
@@ -25,24 +33,46 @@ class OptionTransformer extends \ArrayObject
         parent::__construct($transformed);
     }
 
+    /**
+     * Transforms $key from --long-option format into longOption
+     *
+     * @param string $key The option key to transform
+     * @return string
+     */
     public function transformKey($key)
     {
-        // --long-option -> longOption
         $key = ltrim($key, '-');
         return preg_replace_callback('/-(.?)/', [$this, 'capitalize'], $key);
     }
 
+    /**
+     * "Untransforms" $key from longOption format into long-option
+     *
+     * @param string $key The option key to "untransform"
+     * @return string
+     */
     public function untransformKey($key)
     {
-        // longOption -> long-option
         return ltrim(preg_replace_callback('/([A-Z])/', [$this, 'uncapitalize'], $key), '-');
     }
 
+    /**
+     * Capitalizes a string and returns it
+     *
+     * @param array $matches Array of matches from preg_replace
+     * @return string
+     */
     protected function capitalize($matches)
     {
         return strtoupper($matches[1]);
     }
 
+    /**
+     * Lowercases a string and returns it
+     *
+     * @param array $matches Array of matches from preg_replace
+     * @return string
+     */
     protected function uncapitalize($matches)
     {
         return '-' . strtolower($matches[1]);
