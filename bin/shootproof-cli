@@ -28,7 +28,7 @@ use Monolog\Formatter\LineFormatter;
 
 // Set up the dependency injection container; we do it manually here instead of
 // using the ContainerBuilder to prevent calling Container::lock()
-$di = new Container(new ContainerFactory);
+$di = new Container(new ContainerFactory());
 $di->newInstance('Aura\Cli\_Config\Common')->define($di);
 
 // Parse the command line

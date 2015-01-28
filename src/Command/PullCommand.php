@@ -128,7 +128,7 @@ TEXT;
         }
 
         // Turn the response into an array of stringifiable objects so we can compare file names
-        $remoteFiles = array_map([new ShootproofFile, 'arrayFactory'], $remoteFiles->getArrayCopy());
+        $remoteFiles = array_map([new ShootproofFile(), 'arrayFactory'], $remoteFiles->getArrayCopy());
 
         // Compute files to add, remove, and replace
         $calculator = new FileSetCalculator($remoteFiles, $localFiles, $options->replace);

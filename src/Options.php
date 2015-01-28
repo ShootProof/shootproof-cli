@@ -136,7 +136,7 @@ class Options
 
             if (! $validator($value, $setting, $this->asArray())) {
                 if ($this->throwExceptions) {
-                    $transformer = new OptionTransformer;
+                    $transformer = new OptionTransformer();
                     $option = $transformer->untransformKey($setting);
                     throw new ValidatorException("Invalid --{$option}, see help for usage instructions");
                 } else {
@@ -157,7 +157,7 @@ class Options
 
                 if (! $validator($value, $setting, $settings)) {
                     if ($this->throwExceptions) {
-                        $transformer = new OptionTransformer;
+                        $transformer = new OptionTransformer();
                         $option = $transformer->untransformKey($setting);
                         throw new ValidatorException("Invalid --{$option}, see help for usage instructions");
                     } else {
@@ -179,7 +179,7 @@ class Options
 
                 if ($validator instanceof RequiredValidator && ! $validator($value, $setting, $settings)) {
                     if ($this->throwExceptions) {
-                        $transformer = new OptionTransformer;
+                        $transformer = new OptionTransformer();
                         $option = $transformer->untransformKey($setting);
                         throw new ValidatorException("--{$option} is required, see help for usage instructions");
                     } else {

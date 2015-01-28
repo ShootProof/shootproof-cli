@@ -55,15 +55,15 @@ $options = [
 ];
 
 $validators = [
-    'timezone' => new TimezoneValidator,
+    'timezone' => new TimezoneValidator(),
     'verbosity' => [
         new CallbackValidator('is_numeric', false),
         new RangeValidator(0, 2),
     ],
-    'appId' => new RequiredValidator,
-    'accessToken' => new RequiredValidator,
-    'email' => new EmailValidator,
-    'emailFrom' => new EmailValidator,
+    'appId' => new RequiredValidator(),
+    'accessToken' => new RequiredValidator(),
+    'email' => new EmailValidator(),
+    'emailFrom' => new EmailValidator(),
 ];
 
 $defaults = [

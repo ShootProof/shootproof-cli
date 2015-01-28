@@ -31,7 +31,7 @@ abstract class BaseCommand
         $getopt = $context->getopt(array_keys(self::$options));
 
         // Get directory list
-        $dirListFactory = new DirectoryListFactory;
+        $dirListFactory = new DirectoryListFactory();
         $dirListFactory->loadFromCommandline($getopt->get(), 2);
         $dirListFactory->loadFromStdin(new StdinReader(3));
         $dirList = $dirListFactory->getList();

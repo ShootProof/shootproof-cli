@@ -48,10 +48,10 @@ TEXT;
                     'private_no_password',
                     'private_password',
                 ]),
-                new RequiredValidator,
+                new RequiredValidator(),
             ],
             'event' => [
-                new RequiredValidator,
+                new RequiredValidator(),
                 new ShootproofEventValidator($this->api),
             ],
             'password' => new CallbackValidator(function ($value, $setting, array $settings) {
@@ -65,7 +65,7 @@ TEXT;
                             return false;
                         }
 
-                        $validator = new RequiredValidator;
+                        $validator = new RequiredValidator();
                         $settings[$setting] = $value;
                         return $validator($value, $setting, $settings);
                 }

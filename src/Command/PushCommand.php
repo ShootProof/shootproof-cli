@@ -132,7 +132,7 @@ TEXT;
 
                 $this->logger->addDebug('Fetching album photos', [$albumId]);
                 if ($baseOptions->preview) {
-                    $remoteFiles = new \ArrayObject;
+                    $remoteFiles = new \ArrayObject();
                 } else {
                     $remoteFiles = new ResultPager(function ($page) use ($albumId) {
                         $response = $this->api->getAlbumPhotos($albumId, $page + 1);
@@ -153,7 +153,7 @@ TEXT;
 
                 $this->logger->addDebug('Fetching event photos', [$eventId]);
                 if ($baseOptions->preview) {
-                    $remoteFiles = new \ArrayObject;
+                    $remoteFiles = new \ArrayObject();
                 } else {
                     $remoteFiles = new ResultPager(function ($page) use ($eventId) {
                         $response = $this->api->getEventPhotos($eventId, $page + 1);
@@ -167,7 +167,7 @@ TEXT;
         }
 
         // Turn the response into an array of stringifiable objects so we can compare file names
-        $remoteFiles = array_map([new ShootproofFile, 'arrayFactory'], $remoteFiles->getArrayCopy());
+        $remoteFiles = array_map([new ShootproofFile(), 'arrayFactory'], $remoteFiles->getArrayCopy());
 
         // Compute files to add, remove, and replace
         $calculator = new FileSetCalculator($localFiles, $remoteFiles, $options->replace);
