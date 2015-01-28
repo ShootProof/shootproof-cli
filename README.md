@@ -76,11 +76,21 @@ phar.readonly = 0
 
 To build the phar file, change to the location of your `shootproof-cli` project clone and execute the `build.php` script line this:
 
-```
+``` bash
 $ php build.php
 ```
 
 This will create a `build/` directory and place the generated `shootproof-cli.phar` file there.
+
+### Preparing a Release
+
+When preparing a release, clean things up with Composer before building the phar file:
+
+``` bash
+$ composer install --no-dev --prefer-source --optimize-autoloader
+```
+
+Now, you may build the phar file, and it will be cleaner and more compact.
 
 
 ## License
