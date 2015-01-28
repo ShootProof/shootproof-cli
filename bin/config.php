@@ -74,24 +74,33 @@ $defaults = [
     'emailSubject' => 'shootproof-cli script execution report (' . date('Y-m-d H:i:s') . ')',
 ];
 
+/**
+ * @string
+ */
 $monologChannel = 'shootproof-cli';
 
+/**
+ * @string
+ */
 $monologFormat = "%level_name%: %message% %context%" . PHP_EOL;
 
+/**
+ * @array
+ */
 $monologVerbosity = [
     0 => Logger::ERROR,
     1 => Logger::NOTICE,
     2 => Logger::DEBUG
 ];
 
-return compact(
-    'summary',
-    'usage',
-    'description',
-    'options',
-    'validators',
-    'defaults',
-    'monologChannel',
-    'monologFormat',
-    'monologVerbosity'
-);
+return [
+    'summary' => $summary,
+    'usage' => $usage,
+    'description' => $description,
+    'options' => $options,
+    'validators' => $validators,
+    'defaults' => $defaults,
+    'monologChannel' => $monologChannel,
+    'monologFormat' => $monologFormat,
+    'monologVerbosity' => $monologVerbosity,
+];
