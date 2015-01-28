@@ -11,11 +11,31 @@
 
 namespace ShootProof\Cli\Utility;
 
+/**
+ * Utility to expand tilde file paths into full paths
+ *
+ * @uses POSIX functions, which are NOT available on Windows
+ */
 class TildeExpander
 {
+    /**
+     * The file path to expand
+     * @var string
+     */
     protected $path;
+
+    /**
+     * The current system user's home directory
+     * @var string
+     */
     protected $homedir;
 
+    /**
+     * Constructs a tilde expander object
+     *
+     * @param string $path The file path to expand
+     * @throws \InvalidArgumentException if $path is an array
+     */
     public function __construct($path)
     {
         if (is_array($path)) {
@@ -27,6 +47,11 @@ class TildeExpander
         $this->homedir = $info['dir'];
     }
 
+    /**
+     * Converts this object to a string representation of the expanded path
+     *
+     * @return string
+     */
     public function __toString()
     {
         return str_replace('~', $this->homedir, $this->path);
