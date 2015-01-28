@@ -11,8 +11,16 @@
 
 namespace ShootProof\Cli\Utility;
 
+/**
+ * Utility for writing .shootproof config files
+ */
 class ConfigWriter extends \ArrayObject
 {
+    /**
+     * Converts array property keys stored on this object into a string representation
+     *
+     * @return string
+     */
     public function __toString()
     {
         $contents = '';
@@ -28,6 +36,14 @@ class ConfigWriter extends \ArrayObject
         return $contents;
     }
 
+    /**
+     * Writes the config properties stored on this object to the given file
+     *
+     * @param string $filepath Path to the local file to which this config should be written
+     * @return boolean true when the file has been written to successfully
+     * @throws \InvalidArgumentException if the file is not writable
+     * @throws \RuntimeException if an error occurred while writing to the file
+     */
     public function write($filepath)
     {
         if (! is_writable(dirname($filepath))) {
