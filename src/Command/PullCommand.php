@@ -185,12 +185,12 @@ TEXT;
         for ($i = 1; $i <= $retryLimit; $i++) {
             try {
                 if (isset($e)) {
-                    $this->logger->addInfo('Download failed, retrying', [$downloader->result['http_code']]);
+                    $this->logger->addInfo('Download failed, retrying', [$downloader->getResult('http_code')]);
                     unset($e);
                 }
 
                 $downloader->download($destination, true);
-                $this->logger->addDebug('Download completed', [$downloader->result['download_content_length']]);
+                $this->logger->addDebug('Download completed', [$downloader->getResult('download_content_length')]);
                 return;
             } catch (\RuntimeException $e) {
                 @unlink($destination);
@@ -203,6 +203,6 @@ TEXT;
             }
         }
 
-        $this->logger->addError('Download failed on final attempt', [$downloader->result['http_code']]);
+        $this->logger->addError('Download failed on final attempt', [$downloader->getResult('http_code')]);
     }
 }

@@ -4,7 +4,7 @@ namespace ShootProof\Cli\Utility;
 
 class FileDownloader
 {
-    public $result;
+    protected $result;
     protected $url;
 
     public function __construct($url)
@@ -41,5 +41,10 @@ class FileDownloader
         } elseif ($this->result['http_code'] >= 400) {
             throw new \RuntimeException('Download failed with HTTP ' . $this->result['http_code']);
         }
+    }
+
+    public function getResult($key)
+    {
+        return $this->result[$key];
     }
 }
