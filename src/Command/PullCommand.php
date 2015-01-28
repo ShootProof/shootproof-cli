@@ -138,7 +138,7 @@ TEXT;
             $filePath = $dir . DIRECTORY_SEPARATOR . $file;
             $this->logger->addNotice('Downloading new file from ShootProof', [$filePath]);
             if (! $baseOptions->preview) {
-                $this->downloadFile($file->url['original'], $filePath, $baseOptions);
+                $this->downloadFile($file->getUrl('original'), $filePath, $baseOptions);
             }
         }
 
@@ -155,7 +155,7 @@ TEXT;
             $this->logger->addNotice('Replacing local file', [$filePath]);
             if (! $baseOptions->preview) {
                 @unlink($filePath);
-                $this->downloadFile($file->url['original'], $filePath, $baseOptions);
+                $this->downloadFile($file->getUrl('original'), $filePath, $baseOptions);
             }
         }
 

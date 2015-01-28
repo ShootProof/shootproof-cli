@@ -4,9 +4,9 @@ namespace ShootProof\Cli\Utility;
 
 class ShootproofFile
 {
-    public $id = '';
-    public $name = '';
-    public $url = [];
+    protected $id = '';
+    protected $name = '';
+    protected $url = [];
 
     public function __construct($name = '', $id = '', $url = [])
     {
@@ -17,17 +17,31 @@ class ShootproofFile
 
     public function __toString()
     {
-        return (string) $this->name;
+        return $this->getName();
     }
 
     public function arrayFactory(array $data)
     {
-        extract($data);
-        return new self($name, $id, $url);
+        return new self($data['name'], $data['id'], $data['url']);
     }
 
     public function stringFactory($name)
     {
         return new self($name);
+    }
+
+    public function getName()
+    {
+        return (string) $this->name;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getUrl($type)
+    {
+        return $this->url[$type];
     }
 }

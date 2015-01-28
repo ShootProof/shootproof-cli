@@ -181,17 +181,17 @@ TEXT;
         }
 
         foreach ($calculator->remove() as $file) {
-            $this->logger->addNotice('Deleting remote file', [$file->id, (string) $file]);
+            $this->logger->addNotice('Deleting remote file', [$file->getId(), (string) $file]);
             if (! $baseOptions->preview) {
-                $this->deleteFile($file->id, $options->retryLimit);
+                $this->deleteFile($file->getId(), $options->retryLimit);
             }
         }
 
         foreach ($calculator->replace() as $file) {
             $filePath = $dir . DIRECTORY_SEPARATOR . $file;
-            $this->logger->addNotice('Replacing remote file', [$file->id, $filePath]);
+            $this->logger->addNotice('Replacing remote file', [$file->getId(), $filePath]);
             if (! $baseOptions->preview) {
-                $this->updateFile($filePath, $file->id, $options->retryLimit);
+                $this->updateFile($filePath, $file->getId(), $options->retryLimit);
             }
         }
 
