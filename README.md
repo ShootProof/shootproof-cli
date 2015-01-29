@@ -6,9 +6,7 @@ Command line client for interacting with the [ShootProof API](http://developer.s
 
 ## Installation
 
-_Your system must have PHP 5.4 or later installed in order to use the ShootProof command line tool._
-
-_NOTICE: This tool is not currently supported on Windows, as it makes use of [POSIX](http://php.net/posix) functions._
+_NOTICE: Your system must have PHP 5.4 or later installed in order to use the ShootProof command line tool. This tool is not currently supported on Windows, as it makes use of [POSIX](http://php.net/posix) functions._
 
 Download the `shootproof-cli.phar` file from the [latest release](https://github.com/shootproof/shootproof-cli/releases) and place it in `/usr/local/bin` or wherever it's accessible from your `PATH`.
 
