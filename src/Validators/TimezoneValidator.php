@@ -11,8 +11,14 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates a given timezone value is a timezone
+ */
 class TimezoneValidator implements ValidatorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         try {

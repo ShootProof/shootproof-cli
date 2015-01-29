@@ -11,8 +11,14 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates email addresses
+ */
 class EmailValidator implements ValidatorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         return (

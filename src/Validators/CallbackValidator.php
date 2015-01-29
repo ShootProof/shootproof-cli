@@ -11,17 +11,36 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validator that uses a callback to validate data
+ */
 class CallbackValidator implements ValidatorInterface
 {
+    /**
+     * The callback to use for validation
+     * @var callable
+     */
     protected $callback;
+
+    /**
+     * Whether to pass all arguments to the callback when invoked
+     * @var boolean
+     */
     protected $passAllArgs = true;
 
+    /**
+     * @param callable $callback The callback to use for validation
+     * @param boolean $passAllArgs Whether to pass all arguments to the callback when invoked
+     */
     public function __construct(callable $callback, $passAllArgs = true)
     {
         $this->callback = $callback;
         $this->passAllArgs = $passAllArgs;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         if ($this->passAllArgs) {

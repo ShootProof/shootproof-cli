@@ -11,15 +11,40 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates the presence of a required value
+ */
 class RequiredValidator implements ValidatorInterface
 {
+    /**
+     * Whether to test for strictness
+     * @var boolean
+     */
     protected $strict;
 
+    /**
+     * Constructs a required validator
+     *
+     * If $strict is true, then when the value is present but equal to an
+     * empty value (for the PHP definition of emptiness, see {@link http://php.net/empty empty()}),
+     * the validator will pass as true.
+     *
+     * However, if strict is false, we will also test that the value provided
+     * does not evaluate to false. If it does, then validation will fail.
+     *
+     * By default, this does not do a strict check, so values that evaluate to
+     * boolean false will fail validation as a required value.
+     *
+     * @param boolean $strict Whether to test for strictness
+     */
     public function __construct($strict = false)
     {
         $this->strict = $strict;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         if (! isset($settings[$setting])) {

@@ -11,8 +11,16 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates that the value is a valid ShootProof album
+ *
+ * @todo Complete validation functionality for ShootproofAlbumValidator
+ */
 class ShootproofAlbumValidator extends ShootproofEntityValidator
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         try {

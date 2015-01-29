@@ -11,15 +11,28 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates the value is in a list of valid values
+ */
 class ValuesValidator implements ValidatorInterface
 {
+    /**
+     * Values considered valid
+     * @var array
+     */
     protected $values = [];
 
+    /**
+     * @param array $values Valid values to test against
+     */
     public function __construct(array $values = [])
     {
         $this->values = $values;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         return in_array($value, $this->values);

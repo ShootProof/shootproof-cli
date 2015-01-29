@@ -13,14 +13,23 @@ namespace ShootProof\Cli\Validators;
 
 use Sp_Api;
 
+/**
+ * Base functionality for validating ShootProof API entities
+ */
 abstract class ShootproofEntityValidator implements ValidatorInterface
 {
     protected $api;
 
+    /**
+     * @param Sp_Api $api A ShootProof API object for making ShootProof API requests
+     */
     public function __construct(Sp_Api $api)
     {
         $this->api = $api;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     abstract public function __invoke($value, $setting = null, array $settings = []);
 }

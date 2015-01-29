@@ -11,8 +11,16 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates that the value is a valid ShootProof event
+ *
+ * @todo Complete validation functionality for ShootproofEventValidator
+ */
 class ShootproofEventValidator extends ShootproofEntityValidator
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         try {

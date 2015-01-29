@@ -11,6 +11,9 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Represents validation exceptions
+ */
 class ValidatorException extends \Exception
 {
 }

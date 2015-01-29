@@ -11,17 +11,36 @@
 
 namespace ShootProof\Cli\Validators;
 
+/**
+ * Validates value falls within (or is equal to) the start and end ranges
+ */
 class RangeValidator implements ValidatorInterface
 {
+    /**
+     * Low end of the range
+     * @var int
+     */
     protected $start;
+
+    /**
+     * High end of the range
+     * @var int
+     */
     protected $end;
 
+    /**
+     * @param int $start The low end of the range to test
+     * @param int $end The high end of the range to test
+     */
     public function __construct($start, $end)
     {
         $this->start = $start;
         $this->end = $end;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         return (

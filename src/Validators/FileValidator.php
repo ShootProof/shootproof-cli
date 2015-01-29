@@ -13,8 +13,14 @@ namespace ShootProof\Cli\Validators;
 
 use ShootProof\Cli\Utility\TildeExpander;
 
+/**
+ * Validates a file exists and is readable
+ */
 class FileValidator implements ValidatorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __invoke($value, $setting = null, array $settings = [])
     {
         $value = (string) new TildeExpander($value);
