@@ -68,7 +68,11 @@ For this script to operate properly, you must have an access token authorized fo
 Non-expiring access tokens are available from ShootProof on request.
 
 
-## Building the Phar File
+## Contributing
+
+Generated source code documentation is published [here](https://shootproof.github.io/shootproof-cli/).
+
+### Building the Phar File
 
 The ShootProof command line tool is distributed as an executable [phar](http://php.net/phar) file. The `build.php` script handles building this file.
 
@@ -96,9 +100,9 @@ $ composer install --no-dev --prefer-source --optimize-autoloader
 
 Now, you may build the phar file, and it will be cleaner and more compact.
 
-### Generating and Publishing Documentation from Docblocks
+### Generating and Publishing Documentation from Source Code
 
-To generate docblock documentation with [ApiGen](http://www.apigen.org/) and publish to GitHub pages:
+To generate source code documentation with [ApiGen](http://www.apigen.org/) and publish to GitHub pages:
 
 ``` bash
 $ git checkout master
