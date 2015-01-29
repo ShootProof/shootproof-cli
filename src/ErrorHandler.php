@@ -16,8 +16,87 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use ShootProof\Cli\Validators\ValidatorException;
 
-class ErrorHandler extends MonologErrorHandler
+/**
+ * A custom error handler for dealing with ShootProof command line tool error messages
+ */
+class ErrorHandler
 {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @var MonologErrorHandler
+     */
+    protected $monologHandler;
+
+    /**
+     * One of the LogLevel::* constants
+     * @var string
+     */
+    protected $uncaughtExceptionLevel;
+
+    /**
+     * @var callable
+     */
+    protected $previousExceptionHandler;
+
+    /**
+     * Registers a new ErrorHandler for a given Logger
+     *
+     * By default it will handle errors, exceptions and fatal errors
+     *
+     * @param  LoggerInterface $logger
+     * @param  array|false     $errorLevelMap  an array of E_* constant to LogLevel::* constant mapping, or false to disable error handling
+     * @param  int|false       $exceptionLevel a LogLevel::* constant, or false to disable exception handling
+     * @param  int|false       $fatalLevel     a LogLevel::* constant, or false to disable fatal error handling
+     * @return ErrorHandler
+     */
+    public static function register(LoggerInterface $logger, $errorLevelMap = array(), $exceptionLevel = null, $fatalLevel = null)
+    {
+        // Use our own exception handler, but continue to use Monolog's error and fatal handlers
+        $monolog = MonologErrorHandler::register($logger, $errorLevelMap, false, $fatalLevel);
+        $handler = new static($logger, $monolog);
+
+        if ($exceptionLevel !== false) {
+            // Our own exception handler
+            $handler->registerExceptionHandler($exceptionLevel);
+        }
+
+        return $handler;
+    }
+
+    /**
+     * @param LoggerInterface $logger A logger for capturing and writing error messages
+     * @param MonologErrorHandler $monolog Monolog error handler for passing through to Monolog
+     */
+    public function __construct(LoggerInterface $logger, MonologErrorHandler $monolog)
+    {
+        $this->logger = $logger;
+        $this->monologHandler = $monolog;
+    }
+
+    /**
+     * Registers an exception handler
+     *
+     * @param string $level One of the LogLevel::* constants
+     * @param boolean $callPrevious Whether to also call previous exceptions in the chain
+     */
+    public function registerExceptionHandler($level = null, $callPrevious = true)
+    {
+        $prev = set_exception_handler(array($this, 'handleException'));
+        $this->uncaughtExceptionLevel = $level;
+        if ($callPrevious && $prev) {
+            $this->previousExceptionHandler = $prev;
+        }
+    }
+
+    /**
+     * Handles an exception
+     *
+     * @param \Exception $e The exception to handle
+     */
     public function handleException(\Exception $e)
     {
         if ($e instanceof ValidatorException) {
@@ -27,155 +106,11 @@ class ErrorHandler extends MonologErrorHandler
                 []
             );
         } else {
-            $this->logger->log(
-                $this->uncaughtExceptionLevel === null ? LogLevel::ERROR : $this->uncaughtExceptionLevel,
-                sprintf(
-                    'Uncaught Exception %s: "%s" at %s line %s',
-                    get_class($e),
-                    $e->getMessage(),
-                    $e->getFile(),
-                    $e->getLine()
-                ),
-                ['exception' => $e]
-            );
-
-            if ($this->previousExceptionHandler) {
-                call_user_func($this->previousExceptionHandler, $e);
-            }
-        }
-    }
-
-    // Override private visibility from Monolog\ErrorHandler so we can access it
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
-    public function registerErrorHandler(array $levelMap = [], $callPrevious = true, $errorTypes = -1)
-    {
-        $prev = set_error_handler([$this, 'handleError'], $errorTypes);
-        $this->errorLevelMap = array_replace($this->defaultErrorLevelMap(), $levelMap);
-        if ($callPrevious) {
-            $this->previousErrorHandler = $prev ?: true;
-        }
-    }
-
-    /**
-     * @private
-     */
-    public function handleError($code, $message, $file = '', $line = 0, $context = [])
-    {
-        if (!(error_reporting() & $code)) {
-            return;
+            $this->monologHandler->handleException($e);
         }
 
-        $level = isset($this->errorLevelMap[$code]) ? $this->errorLevelMap[$code] : LogLevel::CRITICAL;
-        $this->logger->log(
-            $level,
-            self::codeToString($code) . ': ' . $message,
-            [
-                'code' => $code,
-                'message' => $message,
-                'file' => $file,
-                'line' => $line
-            ]
-        );
-
-        if ($this->previousErrorHandler === true) {
-            return false;
-        } elseif ($this->previousErrorHandler) {
-            return call_user_func($this->previousErrorHandler, $code, $message, $file, $line, $context);
+        if ($this->previousExceptionHandler) {
+            call_user_func($this->previousExceptionHandler, $e);
         }
-    }
-
-    /**
-     * @private
-     */
-    public function handleFatalError()
-    {
-        $this->reservedMemory = null;
-
-        $lastError = error_get_last();
-        if ($lastError && in_array($lastError['type'], self::$fatalErrors)) {
-            $this->logger->log(
-                $this->fatalLevel === null ? LogLevel::ALERT : $this->fatalLevel,
-                'Fatal Error ('.self::codeToString($lastError['type']).'): '.$lastError['message'],
-                [
-                    'code' => $lastError['type'],
-                    'message' => $lastError['message'],
-                    'file' => $lastError['file'],
-                    'line' => $lastError['line']
-                ]
-            );
-        }
-    }
-
-    protected $logger;
-    protected $previousExceptionHandler;
-    protected $uncaughtExceptionLevel;
-    protected $previousErrorHandler;
-    protected $errorLevelMap;
-    protected $fatalLevel;
-    protected $reservedMemory;
-    protected static $fatalErrors = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR];
-
-    protected function defaultErrorLevelMap()
-    {
-        return [
-            E_ERROR => LogLevel::CRITICAL,
-            E_WARNING => LogLevel::WARNING,
-            E_PARSE => LogLevel::ALERT,
-            E_NOTICE => LogLevel::NOTICE,
-            E_CORE_ERROR => LogLevel::CRITICAL,
-            E_CORE_WARNING => LogLevel::WARNING,
-            E_COMPILE_ERROR => LogLevel::ALERT,
-            E_COMPILE_WARNING => LogLevel::WARNING,
-            E_USER_ERROR => LogLevel::ERROR,
-            E_USER_WARNING => LogLevel::WARNING,
-            E_USER_NOTICE => LogLevel::NOTICE,
-            E_STRICT => LogLevel::NOTICE,
-            E_RECOVERABLE_ERROR => LogLevel::ERROR,
-            E_DEPRECATED => LogLevel::NOTICE,
-            E_USER_DEPRECATED => LogLevel::NOTICE,
-        ];
-    }
-
-    protected static function codeToString($code)
-    {
-        switch ($code) {
-            case E_ERROR:
-                return 'E_ERROR';
-            case E_WARNING:
-                return 'E_WARNING';
-            case E_PARSE:
-                return 'E_PARSE';
-            case E_NOTICE:
-                return 'E_NOTICE';
-            case E_CORE_ERROR:
-                return 'E_CORE_ERROR';
-            case E_CORE_WARNING:
-                return 'E_CORE_WARNING';
-            case E_COMPILE_ERROR:
-                return 'E_COMPILE_ERROR';
-            case E_COMPILE_WARNING:
-                return 'E_COMPILE_WARNING';
-            case E_USER_ERROR:
-                return 'E_USER_ERROR';
-            case E_USER_WARNING:
-                return 'E_USER_WARNING';
-            case E_USER_NOTICE:
-                return 'E_USER_NOTICE';
-            case E_STRICT:
-                return 'E_STRICT';
-            case E_RECOVERABLE_ERROR:
-                return 'E_RECOVERABLE_ERROR';
-            case E_DEPRECATED:
-                return 'E_DEPRECATED';
-            case E_USER_DEPRECATED:
-                return 'E_USER_DEPRECATED';
-        }
-
-        return 'Unknown PHP error';
     }
 }
