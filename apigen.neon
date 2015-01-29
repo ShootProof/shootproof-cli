@@ -1,0 +1,12 @@
+source:
+	- src
+	
+destination: build/apidocs
+title: ShootProof Command Line Tool
+main: ShootProof\Cli
+deprecated: true
+todo: true
+sourceCode: true
+quiet: false
+tree: true
+php: true
