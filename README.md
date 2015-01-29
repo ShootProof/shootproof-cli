@@ -78,7 +78,7 @@ To build `shootproof-cli.phar`, first make sure that phar creation is enabled in
 phar.readonly = 0
 ```
 
-To build the phar file, change to the location of your `shootproof-cli` project clone and execute the `build.php` script line this:
+To build the phar file, change to the location of your `shootproof-cli` project clone and execute the `build.php` script:
 
 ``` bash
 $ php build.php
@@ -95,6 +95,24 @@ $ composer install --no-dev --prefer-source --optimize-autoloader
 ```
 
 Now, you may build the phar file, and it will be cleaner and more compact.
+
+### Generating and Publishing Documentation from Docblocks
+
+To generate docblock documentation with [ApiGen](http://www.apigen.org/) and publish to GitHub pages:
+
+``` bash
+$ git checkout master
+$ apigen generate
+$ git stash
+$ git checkout gh-pages
+$ cp -R build/apidocs/* .
+$ git add *
+$ git commit -m "Generated documentation with ApiGen"
+$ git push origin gh-pages
+$ git checkout master
+$ git stash pop
+```
+
 
 
 ## License
