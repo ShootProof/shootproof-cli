@@ -26,6 +26,8 @@ class Compiler
 
         $phar->startBuffering();
 
+        $this->addFile($phar, new \SplFileInfo(__DIR__ . '/../LICENSE'), false);
+
         $finder = $this->getFinder();
         $finder->files()
             ->ignoreVCS(true)
@@ -52,13 +54,12 @@ class Compiler
 
         $this->addFile($phar, new \SplFileInfo(__DIR__ . '/../bin/config.php'));
         $this->addBin($phar);
+        $phar->compressFiles(\Phar::GZ);
 
         // Stubs
         $phar->setStub($this->getStub());
 
         $phar->stopBuffering();
-
-        $this->addFile($phar, new \SplFileInfo(__DIR__ . '/../LICENSE'), false);
 
         unset($phar);
     }
