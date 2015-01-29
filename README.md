@@ -2,6 +2,8 @@
 
 Command line client for interacting with the [ShootProof API](http://developer.shootproof.com).
 
+[![Build Status](https://travis-ci.org/ShootProof/shootproof-cli.svg?branch=master)](https://travis-ci.org/ShootProof/shootproof-cli)
+
 ## Installation
 
 _Your system must have PHP 5.4 or later installed in order to use the ShootProof command line tool._
