@@ -54,8 +54,12 @@ class ErrorHandler
      * @param int|false $fatalLevel a LogLevel::* constant, or false to disable fatal error handling
      * @return ErrorHandler
      */
-    public static function register(LoggerInterface $logger, $errorLevelMap = array(), $exceptionLevel = null, $fatalLevel = null)
-    {
+    public static function register(
+        LoggerInterface $logger,
+        $errorLevelMap = array(),
+        $exceptionLevel = null,
+        $fatalLevel = null
+    ) {
         // Use our own exception handler, but continue to use Monolog's error and fatal handlers
         $monolog = MonologErrorHandler::register($logger, $errorLevelMap, false, $fatalLevel);
         $handler = new static($logger, $monolog);
