@@ -14,8 +14,16 @@ namespace ShootProof\Cli;
 use Aura\Di\Config;
 use Aura\Di\Container;
 
+/**
+ * Dependency injection container configuration
+ */
 class DependencyConfig extends Config
 {
+    /**
+     * Defines configuration for the dependency injection container
+     *
+     * @param Container $di Aura dependency injection container
+     */
     public function define(Container $di)
     {
         $di->set('Aura\Cli\Context', $di->lazyNew('Aura\Cli\Context'));
