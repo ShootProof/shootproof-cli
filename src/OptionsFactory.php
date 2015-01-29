@@ -17,23 +17,56 @@ use ShootProof\Cli\Options;
 use ShootProof\Cli\Utility\OptionTransformer;
 use ShootProof\Cli\Utility\TildeExpander;
 
+/**
+ * Factory for building an Options object
+ */
 class OptionsFactory
 {
+    /**
+     * @var array
+     */
     protected $config = [];
+
+    /**
+     * @var Context
+     */
     protected $context;
-    protected $loader;
+
+    /**
+     * @var \InvalidArgumentException
+     */
     protected $error;
 
+    /**
+     * Constructs an options factory
+     *
+     * @param Context $context
+     */
     public function __construct(Context $context)
     {
         $this->context = $context;
     }
 
+    /**
+     * Sets up the base configuration for options
+     *
+     * @param array $getopt Options data
+     * @param array $validators Validators to validate the options
+     * @param array $defaults Default values for the options
+     */
     public function setBaseConfig(array $getopt = [], array $validators = [], array $defaults = [])
     {
         $this->config = compact('getopt', 'validators', 'defaults');
     }
 
+    /**
+     * Creates and returns a new Options instance
+     *
+     * @param array $getopt Options data
+     * @param array $validators Validators to validate the options
+     * @param array $defaults Default values for the options
+     * @return Options
+     */
     public function newInstance(array $getopt = [], array $validators = [], array $defaults = [])
     {
         $this->error = null;
@@ -71,6 +104,11 @@ class OptionsFactory
         return $options;
     }
 
+    /**
+     * Returns the last exception encountered when processing options
+     *
+     * @return \InvalidArgumentException|null
+     */
     public function getLastError()
     {
         return $this->error;
