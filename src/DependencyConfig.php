@@ -31,7 +31,7 @@ class DependencyConfig extends Config
 
         // Typehinted dependency resolution for command classes
         $di->params['ShootProof\Cli\Command\BaseCommand']['stdio'] = $di->lazyNew('Aura\Cli\Stdio');
-        $di->params['ShootProof\Cli\Command\BaseCommand']['api'] = $di->get('ShootproofApi');
+        $di->params['ShootProof\Cli\Command\BaseCommand']['api'] = $di->get('ShootProofApi');
         $di->params['ShootProof\Cli\Command\BaseCommand']['logger'] = $di->get('Logger');
         $di->types['Help'] = $di->lazyGet('Help');
 

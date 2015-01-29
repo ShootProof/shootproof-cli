@@ -91,7 +91,7 @@ $api = new Sp_Api($options->accessToken);
 
 // Finish configuring the DI container, and lock it
 $di->set('Logger', $logger);
-$di->set('ShootproofApi', $api);
+$di->set('ShootProofApi', $api);
 $di->newInstance('ShootProof\Cli\DependencyConfig')->define($di);
 $di->lock();
 

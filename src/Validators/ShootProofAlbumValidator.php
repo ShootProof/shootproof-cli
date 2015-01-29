@@ -14,9 +14,9 @@ namespace ShootProof\Cli\Validators;
 /**
  * Validates that the value is a valid ShootProof album
  *
- * @todo Complete validation functionality for ShootproofAlbumValidator
+ * @todo Complete validation functionality for ShootProofAlbumValidator
  */
-class ShootproofAlbumValidator extends ShootproofEntityValidator
+class ShootProofAlbumValidator extends ShootproofEntityValidator
 {
     /**
      * {@inheritdoc}

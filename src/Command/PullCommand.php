@@ -19,12 +19,12 @@ use ShootProof\Cli\Utility\ConfigWriter;
 use ShootProof\Cli\Utility\FileDownloader;
 use ShootProof\Cli\Utility\FileSetCalculator;
 use ShootProof\Cli\Utility\ResultPager;
-use ShootProof\Cli\Utility\ShootproofFile;
+use ShootProof\Cli\Utility\ShootProofFile;
 use ShootProof\Cli\Utility\TildeExpander;
-use ShootProof\Cli\Validators\ShootproofAlbumValidator;
-use ShootProof\Cli\Validators\ShootproofEventValidator;
+use ShootProof\Cli\Validators\ShootProofAlbumValidator;
+use ShootProof\Cli\Validators\ShootProofEventValidator;
 use ShootProof\Cli\Validators\ValidatorException;
-use Sp_Api as ShootproofApi;
+use Sp_Api as ShootProofApi;
 
 /**
  * Provides the shootproof-cli pull command
@@ -77,8 +77,8 @@ TEXT;
     protected function getValidators()
     {
         return [
-            'event' => new ShootproofEventValidator($this->api),
-            'album' => new ShootproofAlbumValidator($this->api),
+            'event' => new ShootProofEventValidator($this->api),
+            'album' => new ShootProofAlbumValidator($this->api),
         ];
     }
 
@@ -167,7 +167,7 @@ TEXT;
         }
 
         // Turn the response into an array of stringifiable objects so we can compare file names
-        $remoteFiles = array_map([new ShootproofFile(), 'arrayFactory'], $remoteFiles->getArrayCopy());
+        $remoteFiles = array_map([new ShootProofFile(), 'arrayFactory'], $remoteFiles->getArrayCopy());
 
         // Compute files to add, remove, and replace
         $calculator = new FileSetCalculator($remoteFiles, $localFiles, $options->replace);

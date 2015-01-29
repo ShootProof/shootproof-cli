@@ -18,7 +18,7 @@ use ShootProof\Cli\Options;
 use ShootProof\Cli\OptionsFactory;
 use ShootProof\Cli\Utility\DirectoryListFactory;
 use ShootProof\Cli\Utility\StdinReader;
-use Sp_Api as ShootproofApi;
+use Sp_Api as ShootProofApi;
 
 /**
  * Provides functionality shared by most shootproof-cli commands
@@ -43,7 +43,7 @@ abstract class BaseCommand
     protected $logger;
 
     /**
-     * @var ShootproofApi
+     * @var ShootProofApi
      */
     protected $api;
 
@@ -52,9 +52,9 @@ abstract class BaseCommand
      *
      * @param Stdio $stdio Command line standard input/output
      * @param Logger $logger
-     * @param ShootproofApi $api
+     * @param ShootProofApi $api
      */
-    public function __construct(Stdio $stdio, Logger $logger, ShootproofApi $api)
+    public function __construct(Stdio $stdio, Logger $logger, ShootProofApi $api)
     {
         $this->stdio = $stdio;
         $this->logger = $logger;

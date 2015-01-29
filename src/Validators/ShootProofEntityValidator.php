@@ -16,7 +16,7 @@ use Sp_Api;
 /**
  * Base functionality for validating ShootProof API entities
  */
-abstract class ShootproofEntityValidator implements ValidatorInterface
+abstract class ShootProofEntityValidator implements ValidatorInterface
 {
     protected $api;
 

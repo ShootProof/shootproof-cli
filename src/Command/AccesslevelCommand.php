@@ -18,9 +18,9 @@ use ShootProof\Cli\OptionsFactory;
 use ShootProof\Cli\Utility\TildeExpander;
 use ShootProof\Cli\Validators\CallbackValidator;
 use ShootProof\Cli\Validators\RequiredValidator;
-use ShootProof\Cli\Validators\ShootproofEventValidator;
+use ShootProof\Cli\Validators\ShootProofEventValidator;
 use ShootProof\Cli\Validators\ValuesValidator;
-use Sp_Api as ShootproofApi;
+use Sp_Api as ShootProofApi;
 
 /**
  * Provides the shootproof-cli accesslevel command
@@ -78,7 +78,7 @@ TEXT;
             ],
             'event' => [
                 new RequiredValidator(),
-                new ShootproofEventValidator($this->api),
+                new ShootProofEventValidator($this->api),
             ],
             'password' => new CallbackValidator(function ($value, $setting, array $settings) {
                 // Require a password for certain access levels

@@ -14,7 +14,7 @@ namespace ShootProof\Cli\Utility;
 /**
  * Represents a ShootProof file
  */
-class ShootproofFile
+class ShootProofFile
 {
     /**
      * ShootProof ID of the file
