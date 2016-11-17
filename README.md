@@ -80,6 +80,12 @@ To build `shootproof-cli.phar`, first make sure that phar creation is enabled in
 phar.readonly = 0
 ```
 
+Make sure you have enough file handles available:
+
+``` bash
+$ ulimit -Sn 4096
+```
+
 To build the phar file, change to the location of your `shootproof-cli` project clone and execute the `build.php` script:
 
 ``` bash
