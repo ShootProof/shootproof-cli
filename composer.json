@@ -22,7 +22,7 @@
         "aura/cli": "~2.0",
         "aura/di": "~2.0",
         "monolog/monolog": "~1.11",
-        "shootproof/php-sdk": "~1.1",
+        "shootproof/php-sdk": "^1.1.2",
         "symfony/finder": "~2.6"
     },
     "require-dev": {
