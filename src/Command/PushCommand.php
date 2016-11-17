@@ -160,10 +160,8 @@ TEXT;
         $albumId = $options->album ? $options->album : null;
 
         // Get remote file list
-        switch ($options->target)
-        {
+        switch ($options->target) {
             case 'album':
-
                 // Create the album
                 if (! $albumId) {
                     list($eventId, $albumId) = $this->createAlbum($options, basename($dir));
@@ -184,7 +182,6 @@ TEXT;
                 break;
 
             case 'event':
-
                 // Create the event
                 if (! $eventId) {
                     $eventId = $this->createEvent($options, basename($dir));
@@ -247,8 +244,7 @@ TEXT;
             $this->logger->addDebug('ShootProof settings file saved', [$configPath]);
         } catch (\InvalidArgumentException $e) {
             $this->logger->addWarning('ShootProof settings file is unwritable', [$configPath]);
-        }
-        catch (\RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             $this->logger->addWarning('Failed writing ShootProof settings file', [$configPath]);
         }
     }

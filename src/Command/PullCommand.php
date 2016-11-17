@@ -141,8 +141,7 @@ TEXT;
         $localFiles = array_map('basename', $this->getFileList($dir));
 
         // Get remote file list
-        switch ($options->target)
-        {
+        switch ($options->target) {
             case 'album':
                 $this->logger->addDebug('Fetching album photos', [$options->album]);
                 $remoteFiles = new ResultPager(function ($page) use ($options) {
@@ -210,8 +209,7 @@ TEXT;
             $this->logger->addDebug('ShootProof settings file saved', [$configPath]);
         } catch (\InvalidArgumentException $e) {
             $this->logger->addWarning('ShootProof settings file is unwritable', [$configPath]);
-        }
-        catch (\RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             $this->logger->addWarning('Failed writing ShootProof settings file', [$configPath]);
         }
     }

@@ -82,8 +82,7 @@ TEXT;
             ],
             'password' => new CallbackValidator(function ($value, $setting, array $settings) {
                 // Require a password for certain access levels
-                switch ($settings['accessLevel'])
-                {
+                switch ($settings['accessLevel']) {
                     case 'public_password':
                     case 'private_password':
                         // Was the --password option passed with no value?
