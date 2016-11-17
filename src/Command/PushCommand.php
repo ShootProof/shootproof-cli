@@ -139,7 +139,7 @@ TEXT;
         // Reload the options and read the directory config file
         $options = $optionsFactory->newInstance([], $this->getValidators(), $this->getDefaults());
         $configPath = new TildeExpander($dir) . '/.shootproof';
-        $configLoader = new DotenvLoader($configPath);
+        $configLoader = new DotenvLoader((string) $configPath);
         try {
             $configData = $configLoader->parse()->toArray();
             $options->loadOptionData($configData, false); // don't overwrite CLI data
