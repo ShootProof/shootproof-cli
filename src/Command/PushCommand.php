@@ -76,6 +76,7 @@ Uploads photos in a directory or set of directories to a ShootProof
         parentAlbum=<parentAlbumId>
         albumName=<name>
         albumPassword=<password>
+        brand=<brandId>
 
     After this command completes successfully, a .shootproof file will be
     written to the directory for use in subsequent runs.
@@ -346,9 +347,13 @@ TEXT;
     protected function createEvent(Options $options, $defaultName)
     {
         $eventName = $options->eventName ? $options->eventName : $defaultName;
+        $brandId = $options->brand ? $options->brand : null;
         $this->logger->addNotice('Creating ShootProof event', [$eventName]);
+        if ($brandId) {
+            $this->logger->addNotice('Using brand ID', [$brandId]);
+        }
         if (! $options->preview) {
-            $response = $this->api->createEvent($eventName);
+            $response = $this->api->createEvent($eventName, $brandId);
             return $response['event']['id'];
         } else {
             return 'EVENT_ID_PREVIEW';
