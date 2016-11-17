@@ -93,7 +93,7 @@ class OptionsFactory
         $options->loadOptionData($data->getArrayCopy()); // initial load so we can access the config option
 
         // Read config file
-        $configLoader = new DotenvLoader(new TildeExpander($options->config));
+        $configLoader = new DotenvLoader((string) new TildeExpander($options->config));
         try {
             $configData = $configLoader->parse()->toArray();
             $options->loadOptionData($configData, false); // don't overwrite CLI data
