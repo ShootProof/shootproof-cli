@@ -1,7 +1,5 @@
 # Contributing
 
-Generated source code documentation is published [here](https://shootproof.github.io/shootproof-cli/).
-
 ## Run CodeSniffer
 
 ``` bash
@@ -43,21 +41,3 @@ $ php build.php
 ```
 
 This will create a `build/` directory and place the generated `shootproof-cli.phar` file there.
-
-## Generate and Publish Source Code Documentation
-
-To generate source code documentation with [ApiGen](http://www.apigen.org/) and publish to GitHub pages:
-
-``` bash
-$ git checkout master
-$ apigen generate
-$ git stash
-$ git checkout gh-pages
-$ cp -R build/apidocs/* .
-$ git add *
-$ git commit -m "Generated documentation with ApiGen"
-$ git push origin gh-pages
-$ git checkout master
-$ git stash pop
-```
-
