@@ -74,7 +74,7 @@ We welcome any bugfixes or enhancements that you would like to offer. Please see
 
 ## License
 
-Copyright © 2014-2015 ShootProof, LLC
+Copyright © 2014-2016 ShootProof, LLC
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
