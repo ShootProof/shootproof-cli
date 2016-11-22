@@ -57,6 +57,7 @@ For this script to operate properly, you must have an access token authorized fo
 
 * sp.album.create
 * sp.album.get_photos
+* sp.brand.get_list
 * sp.event.create
 * sp.event.get_photos
 * sp.event.set_access_level
