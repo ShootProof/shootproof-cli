@@ -36,6 +36,7 @@ Displays this help screen, or help for a specific command.
         push
         pull
         accesslevel
+        brands
 TEXT;
 
     /**

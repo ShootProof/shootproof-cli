@@ -28,6 +28,7 @@ Supported commands:
         push
         pull
         accesslevel
+        brands
 
     For instructions on a particular command, run 'help <command>'.
 

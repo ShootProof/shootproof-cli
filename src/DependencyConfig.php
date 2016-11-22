@@ -39,6 +39,7 @@ class DependencyConfig extends Config
         $di->set('push', $di->lazyNew('ShootProof\Cli\Command\PushCommand'));
         $di->set('pull', $di->lazyNew('ShootProof\Cli\Command\PullCommand'));
         $di->set('accesslevel', $di->lazyNew('ShootProof\Cli\Command\AccesslevelCommand'));
+        $di->set('brands', $di->lazyNew('ShootProof\Cli\Command\BrandsCommand'));
         $di->set('help', $di->lazyNew('ShootProof\Cli\Command\HelpCommand'));
     }
 }
