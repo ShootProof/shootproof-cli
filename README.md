@@ -17,7 +17,7 @@ $ mv shootproof-cli.phar /usr/local/bin/shootproof-cli
 
 Now `shootproof-cli` should be available for you to use from the command line.
 
-Optionally, you may clone this repository and [build the phar file yourself](#building-the-phar-file).
+Optionally, you may clone this repository and [build the phar file yourself](CONTRIBUTING.md#build-the-phar-file).
 
 
 ## Usage
