@@ -57,6 +57,7 @@ For this script to operate properly, you must have an access token authorized fo
 
 * sp.album.create
 * sp.album.get_photos
+* sp.brand.get_list
 * sp.event.create
 * sp.event.get_photos
 * sp.event.set_access_level
@@ -68,53 +69,7 @@ Non-expiring access tokens are available from ShootProof on request.
 
 ## Contributing
 
-Generated source code documentation is published [here](https://shootproof.github.io/shootproof-cli/).
-
-### Building the Phar File
-
-The ShootProof command line tool is distributed as an executable [phar](http://php.net/phar) file. The `build.php` script handles building this file.
-
-To build `shootproof-cli.phar`, first make sure that phar creation is enabled in your php.ini file:
-
-```
-phar.readonly = 0
-```
-
-To build the phar file, change to the location of your `shootproof-cli` project clone and execute the `build.php` script:
-
-``` bash
-$ php build.php
-```
-
-This will create a `build/` directory and place the generated `shootproof-cli.phar` file there.
-
-### Preparing a Release
-
-When preparing a release, clean things up with Composer before building the phar file:
-
-``` bash
-$ composer install --no-dev --prefer-source --optimize-autoloader
-```
-
-Now, you may build the phar file, and it will be cleaner and more compact.
-
-### Generating and Publishing Documentation from Source Code
-
-To generate source code documentation with [ApiGen](http://www.apigen.org/) and publish to GitHub pages:
-
-``` bash
-$ git checkout master
-$ apigen generate
-$ git stash
-$ git checkout gh-pages
-$ cp -R build/apidocs/* .
-$ git add *
-$ git commit -m "Generated documentation with ApiGen"
-$ git push origin gh-pages
-$ git checkout master
-$ git stash pop
-```
-
+We welcome any bugfixes or enhancements that you would like to offer. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for instructions.
 
 
 ## License

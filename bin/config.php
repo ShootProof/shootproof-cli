@@ -28,6 +28,7 @@ Supported commands:
         push
         pull
         accesslevel
+        brands
 
     For instructions on a particular command, run 'help <command>'.
 
@@ -40,6 +41,7 @@ Supported commands:
 
         appId=<id>
         accessToken=<token>
+        brand=<brandId>
         verbosity=<level>
         haltOnError=true
         retryLimit=<limit>
@@ -52,6 +54,7 @@ $options = [
     'config:' => 'Path to the .shootproof configuration file',
     'app-id:' => 'ShootProof API application ID',
     'access-token:' => 'ShootProof API access token',
+    'brand:' => 'ShootProof API brand ID',
     'email:' => 'Email address to log the script results to',
     'email-from:' => 'From email address to use when emailing the script results.'
         . "\n        Ignored if --email is not set.",

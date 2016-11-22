@@ -82,8 +82,7 @@ TEXT;
             ],
             'password' => new CallbackValidator(function ($value, $setting, array $settings) {
                 // Require a password for certain access levels
-                switch ($settings['accessLevel'])
-                {
+                switch ($settings['accessLevel']) {
                     case 'public_password':
                     case 'private_password':
                         // Was the --password option passed with no value?
@@ -116,7 +115,7 @@ TEXT;
         // Reload the options and read the directory config file
         $options = $optionsFactory->newInstance([], $this->getValidators());
         $configPath = new TildeExpander($dir) . '/.shootproof';
-        $configLoader = new DotenvLoader($configPath);
+        $configLoader = new DotenvLoader((string) $configPath);
         try {
             $configData = $configLoader->parse()->toArray();
             $options->loadOptionData($configData, false); // don't overwrite CLI data

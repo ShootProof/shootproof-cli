@@ -76,6 +76,7 @@ Uploads photos in a directory or set of directories to a ShootProof
         parentAlbum=<parentAlbumId>
         albumName=<name>
         albumPassword=<password>
+        brand=<brandId>
 
     After this command completes successfully, a .shootproof file will be
     written to the directory for use in subsequent runs.
@@ -139,7 +140,7 @@ TEXT;
         // Reload the options and read the directory config file
         $options = $optionsFactory->newInstance([], $this->getValidators(), $this->getDefaults());
         $configPath = new TildeExpander($dir) . '/.shootproof';
-        $configLoader = new DotenvLoader($configPath);
+        $configLoader = new DotenvLoader((string) $configPath);
         try {
             $configData = $configLoader->parse()->toArray();
             $options->loadOptionData($configData, false); // don't overwrite CLI data
@@ -159,10 +160,8 @@ TEXT;
         $albumId = $options->album ? $options->album : null;
 
         // Get remote file list
-        switch ($options->target)
-        {
+        switch ($options->target) {
             case 'album':
-
                 // Create the album
                 if (! $albumId) {
                     list($eventId, $albumId) = $this->createAlbum($options, basename($dir));
@@ -183,7 +182,6 @@ TEXT;
                 break;
 
             case 'event':
-
                 // Create the event
                 if (! $eventId) {
                     $eventId = $this->createEvent($options, basename($dir));
@@ -246,8 +244,7 @@ TEXT;
             $this->logger->addDebug('ShootProof settings file saved', [$configPath]);
         } catch (\InvalidArgumentException $e) {
             $this->logger->addWarning('ShootProof settings file is unwritable', [$configPath]);
-        }
-        catch (\RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             $this->logger->addWarning('Failed writing ShootProof settings file', [$configPath]);
         }
     }
@@ -346,9 +343,13 @@ TEXT;
     protected function createEvent(Options $options, $defaultName)
     {
         $eventName = $options->eventName ? $options->eventName : $defaultName;
+        $brandId = $options->brand ? $options->brand : null;
         $this->logger->addNotice('Creating ShootProof event', [$eventName]);
+        if ($brandId) {
+            $this->logger->addNotice('Using brand ID', [$brandId]);
+        }
         if (! $options->preview) {
-            $response = $this->api->createEvent($eventName);
+            $response = $this->api->createEvent($eventName, $brandId);
             return $response['event']['id'];
         } else {
             return 'EVENT_ID_PREVIEW';
