@@ -16,7 +16,7 @@ namespace ShootProof\Cli\Validators;
  *
  * @todo Complete validation functionality for ShootProofEventValidator
  */
-class ShootProofEventValidator extends ShootproofEntityValidator
+class ShootProofEventValidator extends ShootProofEntityValidator
 {
     /**
      * {@inheritdoc}
