@@ -4,15 +4,25 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
   - hhvm
 
+sudo: false
+
+before_install:
+  - travis_retry composer self-update
+
+install:
+  - travis_retry composer install --no-interaction --prefer-dist
+
 before_script:
-  - composer self-update
-  - composer install --no-interaction --prefer-source --dev
+  - mkdir -p build/logs
 
 script:
-  - ./vendor/bin/parallel-lint --exclude vendor . bin/shootproof-cli
-  - ./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml
+  - ./vendor/bin/parallel-lint src tests bin bin/shootproof-cli
+  - ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
   - ./vendor/bin/phpcs src bin bin/shootproof-cli --standard=psr2 -sp
 
-after_script: php vendor/bin/coveralls
+after_script:
+  - php vendor/bin/coveralls
